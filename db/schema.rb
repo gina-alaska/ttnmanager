@@ -12,8 +12,10 @@
 ActiveRecord::Schema.define(:version => 20101008011222) do
 
   create_table "alerts", :force => true do |t|
+    t.integer  "zone_id"
     t.text     "text"
-    t.boolean  "active",     :default => true, :null => false
+    t.boolean  "active",     :default => true,  :null => false
+    t.boolean  "system",     :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

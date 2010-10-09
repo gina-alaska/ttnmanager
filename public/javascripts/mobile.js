@@ -5,7 +5,11 @@ Ext.regModel('Zone', {
 });
 
 Ext.regModel('Alert', {
-  fields: ['id', 'text', 'created_at', 'updated_at']
+  fields: ['id', 'text', 'system', 'zone_id', 'zone', 'created_at', {
+    name: 'updated_at',
+    type: 'date',
+    dateFormat: 'c'
+  }]
 });
 
 Ext.regModel('ZonePage', {
@@ -28,8 +32,7 @@ ATN.ZoneStore = new Ext.data.JsonStore({
     url: '/zones.json',
     reader: { type: 'json', root: 'zones' }
   },
-  model: 'Zone',
-  autoLoad: true
+  model: 'Zone'
 });
 
 ATN.AlertStore = new Ext.data.JsonStore({
@@ -40,14 +43,13 @@ ATN.AlertStore = new Ext.data.JsonStore({
     reader: { type: 'json', root: 'alerts' }
   },
   model: 'Alert',
-  autoLoad: true
-});
+  listeners: {
+    load: function(store, records, success) {
+      var count = store.getCount() - 1;
 
-ATN.ZoneList = new Ext.List({
-  xtype: 'list',
-  store: ATN.ZoneStore,
-  tpl: '<tpl for="."><div class="zone">{name}</div></tpl>',
-  itemSelector: 'div.zone'
+      ATN.controller.fireEvent('alert_update', (count > 0 ? count : 0) )
+    }
+  }
 });
 
 ATN.UIPanel = Ext.extend(Ext.TabPanel, {
@@ -67,6 +69,11 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
 
   initComponent: function() {
     this.zone_list = new Ext.List({
+      dockedItems: [{
+        dock: 'top',
+        xtype: 'toolbar',
+        title: 'Zones'
+      }],
       store: ATN.ZoneStore,
       tpl: '<tpl for="."><div class="zone">{name}: <span class="status-{travel_status}">{travel_status}</span></div></tpl>',
       itemSelector: 'div.zone',
@@ -77,13 +84,19 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     });
 
     this.alert_list = new Ext.List({
+      id: 'alert-list',
       store: ATN.AlertStore,
-      tpl: '<tpl for="."><div class="alert">{text}</div></tpl>',
+      tpl: '<tpl for="."><div class="alert"><tpl if="system == false">{updated_at:date("Y/m/d")}: </tpl>{text}</div></tpl>',
       itemSelector: 'div.alert',
       emptyText: 'No Alerts Found',
+      dockedItems: [{
+        dock: 'top',
+        xtype: 'toolbar',
+        title: 'Alerts'
+      }],
       listeners: {
-        itemtap: this.onAlertItemTap,
-        scope: this
+        scope: this,
+        itemtap: this.onAlertItemTap
       }
     });
 
@@ -115,7 +128,14 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       iconCls: 'bolt',
       layout: 'card',
       items: [this.alert_list],
-      badgeText: ATN.AlertStore.getCount()
+      listeners: {
+        scope: this,
+        hide: function() {
+          if (this.getComponent('alerts').getActiveItem() != this.alert_list) {
+            this.getComponent('alerts').setCard(this.alert_list);
+          }
+        }
+      }
     }, ATN.login]
 
     ATN.UIPanel.superclass.initComponent.call(this);
@@ -125,6 +145,30 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       this.zone_list.getStore().load();
       this.onUIZoneBack();
     }, this);
+    ATN.controller.on('back_alert', this.onUIAlertBack, this);
+    ATN.controller.on('after_alert_save', function() {
+      this.alert_list.getStore().load();
+      this.onUIAlertBack();
+    }, this);
+    ATN.controller.on('alert_update', function(count) {
+      var alerts = this.getComponent('alerts');
+      if(alerts.tab.rendered) {
+        alerts.tab.setBadge(count);
+      } else {
+        alerts.tab.on('render', function() {
+          this.setBadge(count);
+        }, alerts.tab, { single: true })
+      }
+    }, this);
+    ATN.controller.on('edit_alert', function(record) {
+      ATN.alert_form.load(record);
+      this.getComponent('alerts').setCard(ATN.alert_form, {
+        type: 'slide'
+      });
+    }, this);
+
+    ATN.ZoneStore.load();
+    ATN.AlertStore.load();
   },
 
   onUIBack: function() {
@@ -164,6 +208,18 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     var store = dataview.getStore(),
         record = store.getAt(index);
 
+    if(record.get('system') && record.get('text') == 'New Alert') {
+      if(ATN.alert_form.rendered) { ATN.alert_form.reset(); }
+      this.getComponent('alerts').setCard(ATN.alert_form, {
+        type: 'slide'
+      });
+    } else {
+      ATN.view_alert.load(record);
+      this.getComponent('alerts').setCard(ATN.view_alert, {
+        type: 'slide'
+      });
+    }
+
     this.fireEvent('navigate', this, 'alert', record);
   },
 
@@ -172,6 +228,16 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
 
     if(zone_list.getActiveItem() != this.zone_list) {
       zone_list.setCard(this.zone_list, {
+        type: 'slide',
+        reverse: true
+      });
+    }
+  },
+  onUIAlertBack: function() {
+    var alert_list = this.getComponent('alerts');
+
+    if(alert_list.getActiveItem() != this.alert_list) {
+      alert_list.setCard(this.alert_list, {
         type: 'slide',
         reverse: true
       });
@@ -256,7 +322,10 @@ Ext.ux.Ajax = {
 
     request = request || {};
 
-    request.url += '/' + id;
+    if(id) {
+      request.url += '/' + id;
+    }
+    
     Ext.applyIf(request, {
       root: 'record',
       method: (id ? 'PUT' : 'POST'),
@@ -275,14 +344,32 @@ Ext.ux.Ajax = {
   },
 
   success: function(response, options) {
+    if(response.getAllResponseHeaders()['content-type'].match(/json/)) {
+      json = Ext.decode(response.responseText);
+    }
+    if(json.flash) {
+      Ext.Msg.alert('Alert', json.flash);
+    }
+
     if(options.listeners.success) {
       options.listeners.success.call(options.listeners.scope || this, response, options)
     }
   },
 
   failure: function(response, options) {
+    var json = {};
+
+    if(response.getAllResponseHeaders()['content-type'].match(/json/)) {
+      json = Ext.decode(response.responseText);
+    }
+    if(json.flash) {
+      Ext.Msg.alert('Error', json.flash);
+    } else {
+      Ext.Msg.alert('Error', 'An unknown error occurred during the request');
+    }
+    
     if(options.listeners.failure) {
-      options.listeners.failure.call(options.listeners.scope || this, response, options)
+      options.listeners.failure.call(options.listeners.scope || this, response, options, json)
     }
   }
 }

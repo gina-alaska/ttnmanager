@@ -1,5 +1,5 @@
 ATN.controller = new Ext.ux.EventManager({
-  events: ['login', 'back_zone', 'save_zone', 'after_zone_save'],
+  events: ['login', 'back_zone', 'save_zone', 'after_zone_save','back_alert', 'save_alert','after_alert_save', 'alert_update'],
   listeners: {
     scope: ATN,
     'save_zone': function() {
@@ -14,7 +14,104 @@ ATN.controller = new Ext.ux.EventManager({
           }
         }
       });
+    },
+    'save_alert': function() {
+      Ext.ux.Ajax.formSubmit({
+        "url": '/alerts',
+        "form": this.alert_form,
+        "root": 'alert',
+        listeners: {
+          scope: this,
+          success: function(response, options) {
+            this.controller.fireEvent('after_alert_save');
+          }
+        }
+      });
     }
+  }
+});
+
+ATN.alert_form = new Ext.form.FormPanel({
+  title: 'Alert Form',
+  url: '/alerts',
+  scroll: 'vertical',
+  monitorOrientation: true,  
+  items: [{
+    xtype: 'hidden',
+    name: 'id'
+  },{
+    title: 'Alert Form',
+    xtype: 'fieldset',
+    items: [{
+      xtype: 'select',
+      name: 'zone_id',
+      label: 'Zone',
+      store: ATN.ZoneStore,
+      displayField: 'name',
+      valueField: 'id'
+    }, {
+      xtype: 'toggle',
+      name: 'active',
+      label: 'Active',
+      value: 1
+    },{
+      xtype: 'textarea',
+      name: 'text',
+      label: 'Message'
+    }]
+  },{
+    xtype: 'button',
+    text: 'Cancel',
+    cls: 'buttons',
+    handler: function() {
+      ATN.controller.fireEvent('back_alert');
+    }
+  }, {
+    xtype: 'button',
+    text: 'Save',
+    ui: 'action',
+    cls: 'buttons',
+    handler: function() {
+      ATN.controller.fireEvent('save_alert');
+    }
+  }]
+});
+
+ATN.view_alert = new Ext.Panel({
+  title: 'Alert!',
+  bodyStyle: 'padding: 3px;',
+  tpl: new Ext.XTemplate(
+    '<tpl for=".">' +
+      '<div class="alert">' +
+        '<p>Zone: {zone.name}</p><br />' +
+        '<p>{text}</p>' +
+      '</div>' +
+    '</tpl>', {
+    compile: true 
+  }),
+
+  dockedItems: [{
+    dock: 'top',
+    title: 'Alert Info',
+    xtype: 'toolbar',
+    items: [{
+      ui: 'back',
+      text: 'Back',
+      handler: function() {
+        ATN.controller.fireEvent('back_alert');
+      }
+    }, { xtype: 'spacer' }, {
+      ui: 'action',
+      text: 'Edit',
+      handler: function() {
+        ATN.controller.fireEvent('edit_alert', ATN.view_alert.ctxRecord);
+      }
+    }]
+  }],
+  load: function(record) {
+    this.ctxRecord = record;
+    var data = record.data;
+    this.update(this.tpl.apply(data));
   }
 });
 

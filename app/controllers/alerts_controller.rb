@@ -3,11 +3,11 @@ class AlertsController < ApplicationController
     if params.include? :node and params[:node] != 'root'
       @alerts = []
     else
-      @alerts = Alert.active
+      @alerts = Alert.active(:include => :zone)
     end
 
     respond_to do |format|
-      format.json { render :json => { :alerts => @alerts } }
+      format.json { render :json => { :alerts => @alerts }.to_json(:include => :zone) }
     end
   end
 
@@ -33,5 +33,27 @@ class AlertsController < ApplicationController
     respond_to do |format|
       format.json { render :json => response }
     end
-  end  
+  end
+
+  def create
+    @alert = Alert.new(params[:alert])
+
+    if @alert.save
+      response = {
+        :success => true,
+        :zone => @alert,
+        :flash => "Created Alert"
+      }
+    else
+      response = {
+        :success => false,
+        :errors => @alert.errors,
+        :flash => "Error Creating Alert"
+      }
+    end
+
+    respond_to do |format|
+      format.json { render :json => response }
+    end
+  end
 end

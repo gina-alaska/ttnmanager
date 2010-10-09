@@ -3,7 +3,7 @@ class ZonesController < ApplicationController
     if params.include? :node and params[:node] != 'root'
       @zones = []
     else
-      @zones = Zone.all
+      @zones = Zone.all(:order => 'name ASC')
     end
 
     respond_to do |format|

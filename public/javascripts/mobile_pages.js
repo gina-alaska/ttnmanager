@@ -94,17 +94,16 @@ ATN.view_alert = new Ext.Panel({
     dock: 'top',
     title: 'Alert Info',
     xtype: 'toolbar',
+    defaults: { ui: 'plain', iconMask: true },
     items: [{
-      ui: 'back',
-      text: 'Back',
+      iconCls: 'arrow_left',
       handler: function() {
         ATN.controller.fireEvent('back_alert');
       }
     }, { xtype: 'spacer' }, {
-      ui: 'action',
-      text: 'Edit',
+      iconCls: 'compose',
       handler: function() {
-        ATN.controller.fireEvent('edit_alert', ATN.view_alert.ctxRecord);
+        ATN.controller.fireEvent('edit_alert');
       }
     }]
   }],

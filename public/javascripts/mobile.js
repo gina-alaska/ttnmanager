@@ -45,9 +45,7 @@ ATN.AlertStore = new Ext.data.JsonStore({
   model: 'Alert',
   listeners: {
     load: function(store, records, success) {
-      var count = store.getCount() - 1;
-
-      ATN.controller.fireEvent('alert_update', (count > 0 ? count : 0) )
+      ATN.controller.fireEvent('alert_update', store.getCount())
     }
   }
 });
@@ -72,7 +70,16 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       dockedItems: [{
         dock: 'top',
         xtype: 'toolbar',
-        title: 'Zones'
+        title: 'Zones',
+        items: [{
+          iconMask: true,
+          ui: 'plain',
+          iconCls: 'refresh',
+          scope: this,
+          handler: function() {
+            this.zone_list.getStore().load();
+          }
+        }]
       }],
       store: ATN.ZoneStore,
       tpl: '<tpl for="."><div class="zone">{name}: <span class="status-{travel_status}">{travel_status}</span></div></tpl>',
@@ -92,7 +99,22 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       dockedItems: [{
         dock: 'top',
         xtype: 'toolbar',
-        title: 'Alerts'
+        title: 'Alerts',
+        defaults: { ui: 'plain', iconMask: true, scope: this },
+        items: [{
+          iconCls: 'refresh',
+          handler: function() {
+            this.alert_list.getStore().load();
+          }
+        }, { xtype: 'spacer' },{
+          iconCls: 'compose',
+          handler: function() {
+            if(ATN.alert_form.rendered) { ATN.alert_form.reset(); }
+            this.getComponent('alerts').setCard(ATN.alert_form, {
+              type: 'slide'
+            });
+          }
+        }]
       }],
       listeners: {
         scope: this,
@@ -160,8 +182,8 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
         }, alerts.tab, { single: true })
       }
     }, this);
-    ATN.controller.on('edit_alert', function(record) {
-      ATN.alert_form.load(record);
+    ATN.controller.on('edit_alert', function() {
+      ATN.alert_form.load(this.ctxAlertRecord);
       this.getComponent('alerts').setCard(ATN.alert_form, {
         type: 'slide'
       });
@@ -208,17 +230,11 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     var store = dataview.getStore(),
         record = store.getAt(index);
 
-    if(record.get('system') && record.get('text') == 'New Alert') {
-      if(ATN.alert_form.rendered) { ATN.alert_form.reset(); }
-      this.getComponent('alerts').setCard(ATN.alert_form, {
-        type: 'slide'
-      });
-    } else {
-      ATN.view_alert.load(record);
-      this.getComponent('alerts').setCard(ATN.view_alert, {
-        type: 'slide'
-      });
-    }
+    this.ctxAlertRecord = record;
+    ATN.view_alert.load(record);
+    this.getComponent('alerts').setCard(ATN.view_alert, {
+      type: 'slide'
+    });
 
     this.fireEvent('navigate', this, 'alert', record);
   },
@@ -234,10 +250,27 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     }
   },
   onUIAlertBack: function() {
-    var alert_list = this.getComponent('alerts');
+    var returnTo,
+        alert_list = this.getComponent('alerts');
 
-    if(alert_list.getActiveItem() != this.alert_list) {
-      alert_list.setCard(this.alert_list, {
+    switch(alert_list.getActiveItem()) {
+      case this.alert_list:
+        break;
+      case ATN.alert_form:
+        if(this.ctxAlertRecord) {
+          returnTo = ATN.view_alert;
+        } else {
+          returnTo = this.alert_list;
+        }
+        break;
+      default:
+        this.ctxAlertRecord = null;
+        returnTo = this.alert_list;
+        break;
+    }
+    
+    if(returnTo) {
+      alert_list.setCard(returnTo, {
         type: 'slide',
         reverse: true
       });

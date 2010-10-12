@@ -15,6 +15,10 @@
   margin-bottom: 5px;
 }
 
+.x-form-fieldset .zone_message label {
+ width: 80%
+}
+
 .home h1 {
   margin: 10px 0px;
   font-weight: bold;

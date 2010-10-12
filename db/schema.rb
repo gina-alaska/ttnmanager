@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101008011222) do
+ActiveRecord::Schema.define(:version => 20101011221331) do
 
   create_table "alerts", :force => true do |t|
     t.integer  "zone_id"
@@ -18,6 +18,19 @@ ActiveRecord::Schema.define(:version => 20101008011222) do
     t.boolean  "system",     :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "messages", :force => true do |t|
+    t.string   "mobile_text"
+    t.string   "full_text"
+    t.string   "group",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "messages_zones", :id => false, :force => true do |t|
+    t.integer "zone_id"
+    t.integer "message_id"
   end
 
   create_table "zones", :force => true do |t|

@@ -1,10 +1,10 @@
 Ext.ns('ATN');
 
 Ext.regModel('Zone', {
-  fields: ['id', 'name', 'travel_status', 'snow_status', 'soil_status', 'created_at', 'updated_at']
+  fields: ['id', 'name', 'travel_status', 'messages', 'snow_status', 'soil_status', 'created_at', 'updated_at']
 });
 
-Ext.regModel('Alert', {
+Ext.regModel('Message', {
   fields: ['id', 'text', 'system', 'zone_id', 'zone', 'created_at', {
     name: 'updated_at',
     type: 'date',
@@ -35,17 +35,17 @@ ATN.ZoneStore = new Ext.data.JsonStore({
   model: 'Zone'
 });
 
-ATN.AlertStore = new Ext.data.JsonStore({
-  storeId: 'alerts',
+ATN.MessageStore = new Ext.data.JsonStore({
+  storeId: 'messages',
   proxy: {
     type: 'ajax',
     url: '/alerts.json',
     reader: { type: 'json', root: 'alerts' }
   },
-  model: 'Alert',
+  model: 'Message',
   listeners: {
     load: function(store, records, success) {
-      ATN.controller.fireEvent('alert_update', store.getCount())
+      ATN.controller.fireEvent('message_update', store.getCount())
     }
   }
 });
@@ -90,27 +90,27 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       }
     });
 
-    this.alert_list = new Ext.List({
-      id: 'alert-list',
-      store: ATN.AlertStore,
+    this.message_list = new Ext.List({
+      id: 'message-list',
+      store: ATN.MessageStore,
       tpl: '<tpl for="."><div class="alert"><tpl if="system == false">{updated_at:date("Y/m/d")}: </tpl>{text}</div></tpl>',
       itemSelector: 'div.alert',
-      emptyText: 'No Alerts Found',
+      emptyText: 'No Messages Found',
       dockedItems: [{
         dock: 'top',
         xtype: 'toolbar',
-        title: 'Alerts',
+        title: 'Messages',
         defaults: { ui: 'plain', iconMask: true, scope: this },
         items: [{
           iconCls: 'refresh',
           handler: function() {
-            this.alert_list.getStore().load();
+            this.message_list.getStore().load();
           }
         }, { xtype: 'spacer' },{
-          iconCls: 'compose',
+          iconCls: 'add',
           handler: function() {
-            if(ATN.alert_form.rendered) { ATN.alert_form.reset(); }
-            this.getComponent('alerts').setCard(ATN.alert_form, {
+            if(ATN.message_form.rendered) { ATN.message_form.reset(); }
+            this.getComponent('messages').setCard(ATN.message_form, {
               type: 'slide'
             });
           }
@@ -118,7 +118,7 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       }],
       listeners: {
         scope: this,
-        itemtap: this.onAlertItemTap
+        itemtap: this.onMessageItemTap
       }
     });
 
@@ -126,10 +126,19 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       title: 'Home',
       itemId: 'home',
       iconCls: 'home',
-      html: '<div class="home">' +
-        '<h1>Welcome to the ATN Mobile Manager</h1>' +
-        '<p>Click on the "Zones" icon below to start managing travel status</p>' +
-        '</div>'
+      scroll: 'vertical',
+      layout: {
+        type: 'vbox',
+        align: 'stretch'
+      },
+      items: [{
+        flex: 2,
+        bodyStyle: 'background: #eee;',
+        html: '<div class="home">' +
+              '<h1>Welcome to the ATN Mobile Manager</h1>' +
+              '<p>Click on the "Zones" icon below to start managing travel status</p>' +
+              '</div>'
+      }, ATN.login]
     },{
       title: 'Zones',
       itemId: 'zones',
@@ -145,20 +154,20 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
         }
       }
     }, {
-      itemId: 'alerts',
-      title: 'Alerts',
+      itemId: 'messages',
+      title: 'Messages',
       iconCls: 'bolt',
       layout: 'card',
-      items: [this.alert_list],
+      items: [this.message_list],
       listeners: {
         scope: this,
         hide: function() {
-          if (this.getComponent('alerts').getActiveItem() != this.alert_list) {
-            this.getComponent('alerts').setCard(this.alert_list);
+          if (this.getComponent('messages').getActiveItem() != this.message_list) {
+            this.getComponent('messages').setCard(this.message_list);
           }
         }
       }
-    }, ATN.login]
+    }]
 
     ATN.UIPanel.superclass.initComponent.call(this);
 
@@ -167,30 +176,30 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       this.zone_list.getStore().load();
       this.onUIZoneBack();
     }, this);
-    ATN.controller.on('back_alert', this.onUIAlertBack, this);
-    ATN.controller.on('after_alert_save', function() {
-      this.alert_list.getStore().load();
-      this.onUIAlertBack();
+    ATN.controller.on('back_message', this.onUIMessageBack, this);
+    ATN.controller.on('after_message_save', function() {
+      this.message_list.getStore().load();
+      this.onUIMessageBack();
     }, this);
-    ATN.controller.on('alert_update', function(count) {
-      var alerts = this.getComponent('alerts');
-      if(alerts.tab.rendered) {
-        alerts.tab.setBadge(count);
+    ATN.controller.on('message_update', function(count) {
+      var messages = this.getComponent('messages');
+      if(messages.tab.rendered) {
+        messages.tab.setBadge(count);
       } else {
-        alerts.tab.on('render', function() {
+        messages.tab.on('render', function() {
           this.setBadge(count);
-        }, alerts.tab, { single: true })
+        }, messages.tab, { single: true })
       }
     }, this);
-    ATN.controller.on('edit_alert', function() {
-      ATN.alert_form.load(this.ctxAlertRecord);
-      this.getComponent('alerts').setCard(ATN.alert_form, {
+    ATN.controller.on('edit_message', function() {
+      ATN.message_form.load(this.ctxMessageRecord);
+      this.getComponent('messages').setCard(ATN.message_form, {
         type: 'slide'
       });
     }, this);
 
     ATN.ZoneStore.load();
-    ATN.AlertStore.load();
+    ATN.MessageStore.load();
   },
 
   onUIBack: function() {
@@ -211,10 +220,10 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     var store = dataview.getStore(),
         record = store.getAt(index);
 
-    ATN.zone_form.load(record);
     this.getComponent('zones').setCard(ATN.zone_form, {
       type: 'slide'
     });
+    ATN.zone_form.load(record);
 
 //    if(Ext.is.Phone) {
 //      this.navBar.setTitle(title || this.title);
@@ -226,17 +235,17 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     this.fireEvent('navigate', this, 'zone', record);
   },
 
-  onAlertItemTap: function(dataview, index, el, e) {
+  onMessageItemTap: function(dataview, index, el, e) {
     var store = dataview.getStore(),
         record = store.getAt(index);
 
-    this.ctxAlertRecord = record;
-    ATN.view_alert.load(record);
-    this.getComponent('alerts').setCard(ATN.view_alert, {
+    this.ctxMessageRecord = record;
+    ATN.view_message.load(record);
+    this.getComponent('messages').setCard(ATN.view_message, {
       type: 'slide'
     });
 
-    this.fireEvent('navigate', this, 'alert', record);
+    this.fireEvent('navigate', this, 'message', record);
   },
 
   onUIZoneBack: function() {
@@ -249,28 +258,28 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       });
     }
   },
-  onUIAlertBack: function() {
+  onUIMessageBack: function() {
     var returnTo,
-        alert_list = this.getComponent('alerts');
+        message_list = this.getComponent('messages');
 
-    switch(alert_list.getActiveItem()) {
-      case this.alert_list:
+    switch(message_list.getActiveItem()) {
+      case this.message_list:
         break;
-      case ATN.alert_form:
-        if(this.ctxAlertRecord) {
-          returnTo = ATN.view_alert;
+      case ATN.message_form:
+        if(this.ctxMessageRecord) {
+          returnTo = ATN.view_message;
         } else {
-          returnTo = this.alert_list;
+          returnTo = this.message_list;
         }
         break;
       default:
-        this.ctxAlertRecord = null;
-        returnTo = this.alert_list;
+        this.ctxMessageRecord = null;
+        returnTo = this.message_list;
         break;
     }
     
     if(returnTo) {
-      alert_list.setCard(returnTo, {
+      message_list.setCard(returnTo, {
         type: 'slide',
         reverse: true
       });
@@ -367,6 +376,7 @@ Ext.ux.Ajax = {
     });
 
     if (request.root) {
+      console.log(values);
       for(var ii in values) {
         params[request.root + '[' + ii + ']'] = values[ii];
       }

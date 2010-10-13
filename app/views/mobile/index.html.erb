@@ -87,8 +87,9 @@
     tpl: new Ext.XTemplate(
       '<tpl for=".">' +
         '<div class="alert">' +
-          '<p>Area: {area.name}</p><br />' +
-          '<p>{text}</p>' +
+          '<p>Area: {area.name}</p>' +
+          '<h2>Message:</h2>' +
+          '<p class="message">{text}</p>' +
         '</div>' +
       '</tpl>', {
       compile: true

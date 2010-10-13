@@ -1,6 +1,6 @@
 <script type="text/javascript">
   ATN.controller = new Ext.ux.EventManager({
-    events: ['login', 'back_area', 'save_area', 'after_area_save','back_message', 'save_message','after_message_save', 'message_update'],
+    events: ['login', 'back_area', 'email_area', 'save_area', 'edit_area', 'after_area_save','back_message', 'save_message','after_message_save', 'message_update'],
     listeners: {
       scope: ATN,
       'login': function() {
@@ -26,11 +26,14 @@
           "root": 'alert',
           listeners: {
             scope: this,
-            success: function(response, options) {
-              this.controller.fireEvent('after_message_save');
+            success: function(response, options, results) {
+              this.controller.fireEvent('after_message_save', Ext.ModelMgr.create(results.alert, 'Message'));
             }
           }
         });
+      },
+      'email_area': function(area) {
+        Ext.Msg.alert('Notice', 'Not Implemented Yet');
       }
     }
   });
@@ -86,10 +89,10 @@
     bodyStyle: 'padding: 3px;',
     tpl: new Ext.XTemplate(
       '<tpl for=".">' +
-        '<div class="alert">' +
+        '<div class="message">' +
           '<p>Area: {area.name}</p>' +
           '<h2>Message:</h2>' +
-          '<p class="message">{text}</p>' +
+          '<p class="text">{text}</p>' +
         '</div>' +
       '</tpl>', {
       compile: true
@@ -119,24 +122,6 @@
     }
   });
 
-  ATN.area_status = new Ext.Panel({
-    title: 'Status',
-    tpl: new Ext.Template(
-      '<div class="area_status">',
-        '<h2>Area: {name}</h2>',
-        '<div><label>Status: </label><span class="status-{status}">{status}</span></div>',
-        '<div><label>Message: </label><span class="message">{message}</span></div>',
-      '</div>',
-      { compiled: true }
-    ),
-    load: function(data) {
-      this.update(this.tpl.apply({
-        name: data.get('name'),
-        status: data.get('status'),
-        message: 'Testing'
-      }));
-    }
-  });
 
   ATN.login = new Ext.form.FormPanel({
     itemId: 'login',
@@ -162,90 +147,5 @@
     }]
   });
 
-  ATN.area_form = new Ext.form.FormPanel({
-    id: 'area_editor',
-    title: 'Area Editor',
-    url: '/areas',
-    scroll: 'vertical',
-    monitorOrientation: true,
-    load: function(data) {
-      this.getComponent('status').setTitle(data.get('name'));
-      this.getComponent('area-toolbar').setTitle(data.get('name'));
-      this.reset();
-      this.loadModel(data);
-      Ext.each(data.get('messages'), function(message) {
-        var item = this.getComponent(message.group).getComponent('message_' + message.id);
-        if (item) { item.setValue(true); }
-      }, this)
-    },
-    dockedItems: [{
-      itemId: 'area-toolbar',
-      dock: 'top',
-      title: 'Area Info',
-      xtype: 'toolbar',
-      defaults: { ui: 'plain', iconMask: true },
-      items: [{
-        iconCls: 'arrow_left',
-        handler: function() {
-          ATN.controller.fireEvent('back_area');
-        }
-      }, { xtype: 'spacer' }, {
-        ui: 'action',
-        text: 'Save',
-        handler: function() {
-          ATN.controller.fireEvent('save_area');
-        }
-      }]
-    }],
-    items: [{
-      xtype: 'hidden',
-      name: 'id'
-    },{
-      itemId: 'status',
-      title: 'Area name here',
-      xtype: 'fieldset',
-      items: [{
-        xtype: 'select',
-        name: 'travel_status',
-        label: 'Travel Status',
-        options: [
-          { text: 'Open', value: 'Open' },
-//        { text: 'Limited', value: 'Limited' },
-          { text: 'Closed', value: 'Closed' }
-        ]
-      }, {
-        xtype: 'textarea',
-        name: 'notes',
-        label: 'Notes'
-      }]
-    },{
-      itemId: 'soil',
-      title: 'Soil Status',
-      xtype: 'fieldset',
-      items: [
-        <%= Message.soil.collect { |m| message_checkbox(m).to_s }.join(',') %>
-      ]
-    },{
-      itemId: 'snow',
-      title: 'Snow Status',
-      xtype: 'fieldset',
-      items: [
-        <%= Message.snow.collect { |m| message_checkbox(m).to_s }.join(',') %>
-      ]
-    },{
-      itemId: 'operational',
-      title: 'Operational Considerations',
-      xtype: 'fieldset',
-      items: [
-        <%= Message.operational.collect { |m| message_checkbox(m).to_s }.join(',') %>
-      ]
-    },{
-      itemId: 'alert',
-      title: 'Alerts',
-      xtype: 'fieldset',
-      items: [
-        <%= Message.alert.collect { |m| message_checkbox(m).to_s }.join(',') %>
-      ]
-    }]
-  });
+  <%= render 'area.js.erb' -%>
 </script>

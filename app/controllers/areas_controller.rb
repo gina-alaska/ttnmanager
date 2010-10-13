@@ -10,7 +10,7 @@ class AreasController < ApplicationController
       format.json {
         render :json => {
           :areas => @areas
-        }.to_json(:include => :messages)
+        }.to_json(:methods => [:alerts, :operationals, :soil, :snow])
       }
     end
   end

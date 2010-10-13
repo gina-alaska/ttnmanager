@@ -40,15 +40,32 @@
   color: Orange;
 }
 
-#alert-list .alert {
+#message-list .message {
   overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
-.alert .message {
+.message .text {
   padding-left: 1em;
-  white-space: pre;
+  white-space: pre-wrap;
+}
+
+.area_status {
+  padding-bottom: 0.5em;
+}
+
+.area_status h2 {
+  text-decoration: underline;
+  margin: 0.5em 0;
+}
+
+.area_status .message {
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+}
+.area_status .alert {
+  margin-left: 1em;
 }
 
 .x-tab img.home {

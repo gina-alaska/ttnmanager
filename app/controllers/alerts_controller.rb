@@ -3,7 +3,7 @@ class AlertsController < ApplicationController
     if params.include? :node and params[:node] != 'root'
       @alerts = []
     else
-      @alerts = Alert.active(:include => :zone)
+      @alerts = Alert.active(:include => :area)
     end
 
     respond_to do |format|
@@ -19,19 +19,19 @@ class AlertsController < ApplicationController
     if @alert.update_attributes(alert_params)
       response = {
         :success => true,
-        :zone => @alert,
-        :flash => "Updated Alert"
+        :alert => @alert,
+        :flash => "Updated Message"
       }
     else
       response = {
         :success => false,
         :errors => @alert.errors,
-        :flash => "Error Updating Alert"
+        :flash => "Error Updating Message"
       }
     end
 
     respond_to do |format|
-      format.json { render :json => response }
+      format.json { render :json => response.to_json(:include => :area) }
     end
   end
 
@@ -41,7 +41,7 @@ class AlertsController < ApplicationController
     if @alert.save
       response = {
         :success => true,
-        :zone => @alert,
+        :alert => @alert,
         :flash => "Created Alert"
       }
     else
@@ -53,7 +53,7 @@ class AlertsController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => response }
+      format.json { render :json => response.to_json(:include => :area) }
     end
   end
 end

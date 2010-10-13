@@ -1,7 +1,7 @@
 Ext.ns('ATN');
 
 Ext.regModel('Area', {
-  fields: ['id', 'name', 'travel_status', 'messages', 'snow_status', 'soil_status', 'created_at', 'updated_at']
+  fields: ['id', 'name', 'notes', 'travel_status', 'snow', 'soil', 'alerts', 'operationals', 'created_at', 'updated_at']
 });
 
 Ext.regModel('Message', {
@@ -93,8 +93,8 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     this.message_list = new Ext.List({
       id: 'message-list',
       store: ATN.MessageStore,
-      tpl: '<tpl for="."><div class="alert"><tpl if="system == false">{updated_at:date("Y/m/d")}: </tpl>{text}</div></tpl>',
-      itemSelector: 'div.alert',
+      tpl: '<tpl for="."><div class="message"><tpl if="system == false">{updated_at:date("Y/m/d")}: </tpl>{text}</div></tpl>',
+      itemSelector: 'div.message',
       emptyText: 'No Messages Found',
       dockedItems: [{
         dock: 'top',
@@ -171,15 +171,15 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
 
     ATN.UIPanel.superclass.initComponent.call(this);
 
-    ATN.controller.on('back_area', this.onUIAreaBack, this);
+    ATN.controller.on('back_area', function() { this.onUIAreaBack(false) }, this);
     ATN.controller.on('after_area_save', function() {
       this.area_list.getStore().load();
       this.onUIAreaBack();
     }, this);
-    ATN.controller.on('back_message', this.onUIMessageBack, this);
-    ATN.controller.on('after_message_save', function() {
+    ATN.controller.on('back_message', function() { this.onUIMessageBack(false) }, this);
+    ATN.controller.on('after_message_save', function(message) {
       this.message_list.getStore().load();
-      this.onUIMessageBack();
+      this.onUIMessageBack(message);
     }, this);
     ATN.controller.on('message_update', function(count) {
       var messages = this.getComponent('messages');
@@ -192,10 +192,16 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       }
     }, this);
     ATN.controller.on('edit_message', function() {
-      ATN.message_form.load(this.ctxMessageRecord);
       this.getComponent('messages').setCard(ATN.message_form, {
         type: 'slide'
       });
+      ATN.message_form.load(this.ctxMessageRecord);
+    }, this);
+    ATN.controller.on('edit_area', function() {
+      this.getComponent('areas').setCard(ATN.area_form, {
+        type: 'slide'
+      });
+      ATN.area_form.load(this.ctxAreaRecord);
     }, this);
 
     ATN.AreaStore.load();
@@ -220,17 +226,11 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     var store = dataview.getStore(),
         record = store.getAt(index);
 
-    this.getComponent('areas').setCard(ATN.area_form, {
+    this.ctxAreaRecord = record;
+    this.getComponent('areas').setCard(ATN.area_status, {
       type: 'slide'
     });
-    ATN.area_form.load(record);
-
-//    if(Ext.is.Phone) {
-//      this.navBar.setTitle(title || this.title);
-//    }
-//
-//    this.toggleBackButton();
-//    this.navBar.doLayout();
+    ATN.area_status.load(record);
 
     this.fireEvent('navigate', this, 'area', record);
   },
@@ -240,33 +240,52 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
         record = store.getAt(index);
 
     this.ctxMessageRecord = record;
-    ATN.view_message.load(record);
     this.getComponent('messages').setCard(ATN.view_message, {
       type: 'slide'
     });
+    ATN.view_message.load(record);
 
     this.fireEvent('navigate', this, 'message', record);
   },
 
-  onUIAreaBack: function() {
-    var area_list = this.getComponent('areas');
+  onUIAreaBack: function(area) {
+    var returnTo,
+        area_panel = this.getComponent('areas');
 
-    if(area_list.getActiveItem() != this.area_list) {
-      area_list.setCard(this.area_list, {
+    switch(area_panel.getActiveItem()) {
+      case this.area_list:
+        break;
+      case ATN.area_form:
+        if(this.ctxAreaRecord) {
+          if(area) { ATN.area_status.load(area); }
+          returnTo = ATN.area_status;
+        } else {
+          returnTo = this.area_list;
+        }
+        break;
+      default:
+        this.ctxAreaRecord = null;
+        returnTo = this.area_list;
+        break;
+    }
+
+    if(returnTo) {
+      area_panel.setCard(returnTo, {
         type: 'slide',
         reverse: true
       });
     }
   },
-  onUIMessageBack: function() {
+  onUIMessageBack: function(message) {
     var returnTo,
-        message_list = this.getComponent('messages');
+        message_panel = this.getComponent('messages');
 
-    switch(message_list.getActiveItem()) {
+    switch(message_panel.getActiveItem()) {
       case this.message_list:
         break;
       case ATN.message_form:
         if(this.ctxMessageRecord) {
+          if(message) { ATN.view_message.load(message); }
           returnTo = ATN.view_message;
         } else {
           returnTo = this.message_list;
@@ -277,9 +296,8 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
         returnTo = this.message_list;
         break;
     }
-    
     if(returnTo) {
-      message_list.setCard(returnTo, {
+      message_panel.setCard(returnTo, {
         type: 'slide',
         reverse: true
       });
@@ -376,7 +394,6 @@ Ext.ux.Ajax = {
     });
 
     if (request.root) {
-      console.log(values);
       for(var ii in values) {
         params[request.root + '[' + ii + ']'] = values[ii];
       }
@@ -395,7 +412,7 @@ Ext.ux.Ajax = {
     }
 
     if(options.listeners.success) {
-      options.listeners.success.call(options.listeners.scope || this, response, options)
+      options.listeners.success.call(options.listeners.scope || this, response, options, json)
     }
   },
 

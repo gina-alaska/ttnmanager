@@ -1,20 +1,20 @@
 <script type="text/javascript">
   ATN.controller = new Ext.ux.EventManager({
-    events: ['login', 'back_zone', 'save_zone', 'after_zone_save','back_message', 'save_message','after_message_save', 'message_update'],
+    events: ['login', 'back_area', 'save_area', 'after_area_save','back_message', 'save_message','after_message_save', 'message_update'],
     listeners: {
       scope: ATN,
       'login': function() {
         Ext.Msg.alert('Notice', 'Not Implemented Yet');
       },
-      'save_zone': function() {
+      'save_area': function() {
         Ext.ux.Ajax.formSubmit({
-          "url": '/zones',
-          "form": this.zone_form,
-          "root": 'zone',
+          "url": '/areas',
+          "form": this.area_form,
+          "root": 'area',
           listeners: {
             scope: this,
             success: function(response, options) {
-              this.controller.fireEvent('after_zone_save');
+              this.controller.fireEvent('after_area_save');
             }
           }
         });
@@ -48,9 +48,9 @@
       xtype: 'fieldset',
       items: [{
         xtype: 'select',
-        name: 'zone_id',
-        label: 'Zone',
-        store: ATN.ZoneStore,
+        name: 'area_id',
+        label: 'Area',
+        store: ATN.AreaStore,
         displayField: 'name',
         valueField: 'id'
       }, {
@@ -87,7 +87,7 @@
     tpl: new Ext.XTemplate(
       '<tpl for=".">' +
         '<div class="alert">' +
-          '<p>Zone: {zone.name}</p><br />' +
+          '<p>Area: {area.name}</p><br />' +
           '<p>{text}</p>' +
         '</div>' +
       '</tpl>', {
@@ -118,11 +118,11 @@
     }
   });
 
-  ATN.zone_status = new Ext.Panel({
+  ATN.area_status = new Ext.Panel({
     title: 'Status',
     tpl: new Ext.Template(
-      '<div class="zone_status">',
-        '<h2>Zone: {name}</h2>',
+      '<div class="area_status">',
+        '<h2>Area: {name}</h2>',
         '<div><label>Status: </label><span class="status-{status}">{status}</span></div>',
         '<div><label>Message: </label><span class="message">{message}</span></div>',
       '</div>',
@@ -161,15 +161,15 @@
     }]
   });
 
-  ATN.zone_form = new Ext.form.FormPanel({
-    id: 'zone_editor',
-    title: 'Zone Editor',
-    url: '/zones',
+  ATN.area_form = new Ext.form.FormPanel({
+    id: 'area_editor',
+    title: 'Area Editor',
+    url: '/areas',
     scroll: 'vertical',
     monitorOrientation: true,
     load: function(data) {
       this.getComponent('status').setTitle(data.get('name'));
-      this.getComponent('zone-toolbar').setTitle(data.get('name'));
+      this.getComponent('area-toolbar').setTitle(data.get('name'));
       this.reset();
       this.loadModel(data);
       Ext.each(data.get('messages'), function(message) {
@@ -178,21 +178,21 @@
       }, this)
     },
     dockedItems: [{
-      itemId: 'zone-toolbar',
+      itemId: 'area-toolbar',
       dock: 'top',
-      title: 'Zone Info',
+      title: 'Area Info',
       xtype: 'toolbar',
       defaults: { ui: 'plain', iconMask: true },
       items: [{
         iconCls: 'arrow_left',
         handler: function() {
-          ATN.controller.fireEvent('back_zone');
+          ATN.controller.fireEvent('back_area');
         }
       }, { xtype: 'spacer' }, {
         ui: 'action',
         text: 'Save',
         handler: function() {
-          ATN.controller.fireEvent('save_zone');
+          ATN.controller.fireEvent('save_area');
         }
       }]
     }],
@@ -201,7 +201,7 @@
       name: 'id'
     },{
       itemId: 'status',
-      title: 'Zone name here',
+      title: 'Area name here',
       xtype: 'fieldset',
       items: [{
         xtype: 'select',

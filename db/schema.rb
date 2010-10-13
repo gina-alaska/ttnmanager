@@ -9,10 +9,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101011221331) do
+ActiveRecord::Schema.define(:version => 20101013184212) do
 
   create_table "alerts", :force => true do |t|
-    t.integer  "zone_id"
+    t.integer  "area_id"
     t.text     "text"
     t.boolean  "active",     :default => true,  :null => false
     t.boolean  "system",     :default => false, :null => false
@@ -20,24 +20,24 @@ ActiveRecord::Schema.define(:version => 20101011221331) do
     t.datetime "updated_at"
   end
 
-  create_table "messages", :force => true do |t|
-    t.string   "mobile_text"
-    t.string   "full_text"
-    t.string   "group",       :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "messages_zones", :id => false, :force => true do |t|
-    t.integer "zone_id"
-    t.integer "message_id"
-  end
-
-  create_table "zones", :force => true do |t|
+  create_table "areas", :force => true do |t|
     t.string   "name"
     t.string   "travel_status"
     t.string   "snow_status"
     t.string   "soil_status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "areas_messages", :id => false, :force => true do |t|
+    t.integer "area_id"
+    t.integer "message_id"
+  end
+
+  create_table "messages", :force => true do |t|
+    t.string   "mobile_text"
+    t.string   "full_text"
+    t.string   "group",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

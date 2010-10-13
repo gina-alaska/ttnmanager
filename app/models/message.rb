@@ -1,5 +1,5 @@
 class Message < ActiveRecord::Base
-  has_and_belongs_to_many :zones
+  has_and_belongs_to_many :areas
 
   named_scope :soil, :conditions => { :group => 'soil' }
   named_scope :snow, :conditions => { :group => 'snow' }

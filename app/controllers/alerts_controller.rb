@@ -7,7 +7,7 @@ class AlertsController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => { :alerts => @alerts }.to_json(:include => :zone) }
+      format.json { render :json => { :alerts => @alerts }.to_json(:include => :area) }
     end
   end
 

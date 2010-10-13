@@ -1,18 +1,18 @@
 Ext.ns('ATN');
 
-Ext.regModel('Zone', {
+Ext.regModel('Area', {
   fields: ['id', 'name', 'travel_status', 'messages', 'snow_status', 'soil_status', 'created_at', 'updated_at']
 });
 
 Ext.regModel('Message', {
-  fields: ['id', 'text', 'system', 'zone_id', 'zone', 'created_at', {
+  fields: ['id', 'text', 'system', 'area_id', 'area', 'created_at', {
     name: 'updated_at',
     type: 'date',
     dateFormat: 'c'
   }]
 });
 
-Ext.regModel('ZonePage', {
+Ext.regModel('AreaPage', {
   fields: [
     'text', 'card', 'data', 'model', 'leaf'
   ]
@@ -25,14 +25,14 @@ ATN.init = function() {
   });
 };
 
-ATN.ZoneStore = new Ext.data.JsonStore({
-  storeId: 'zones',
+ATN.AreaStore = new Ext.data.JsonStore({
+  storeId: 'areas',
   proxy: {
     type: 'ajax',
-    url: '/zones.json',
-    reader: { type: 'json', root: 'zones' }
+    url: '/areas.json',
+    reader: { type: 'json', root: 'areas' }
   },
-  model: 'Zone'
+  model: 'Area'
 });
 
 ATN.MessageStore = new Ext.data.JsonStore({
@@ -66,26 +66,26 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
   },
 
   initComponent: function() {
-    this.zone_list = new Ext.List({
+    this.area_list = new Ext.List({
       dockedItems: [{
         dock: 'top',
         xtype: 'toolbar',
-        title: 'Zones',
+        title: 'Areas',
         items: [{
           iconMask: true,
           ui: 'plain',
           iconCls: 'refresh',
           scope: this,
           handler: function() {
-            this.zone_list.getStore().load();
+            this.area_list.getStore().load();
           }
         }]
       }],
-      store: ATN.ZoneStore,
-      tpl: '<tpl for="."><div class="zone">{name}: <span class="status-{travel_status}">{travel_status}</span></div></tpl>',
-      itemSelector: 'div.zone',
+      store: ATN.AreaStore,
+      tpl: '<tpl for="."><div class="area">{name}: <span class="status-{travel_status}">{travel_status}</span></div></tpl>',
+      itemSelector: 'div.area',
       listeners: {
-        itemtap: this.onZoneItemTap,
+        itemtap: this.onAreaItemTap,
         scope: this
       }
     });
@@ -136,20 +136,20 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
         bodyStyle: 'background: #eee;',
         html: '<div class="home">' +
               '<h1>Welcome to the ATN Mobile Manager</h1>' +
-              '<p>Click on the "Zones" icon below to start managing travel status</p>' +
+              '<p>Click on the "Areas" icon below to start managing travel status</p>' +
               '</div>'
       }, ATN.login]
     },{
-      title: 'Zones',
-      itemId: 'zones',
+      title: 'Areas',
+      itemId: 'areas',
       iconCls: 'maps',
       layout: 'card',
-      items: [this.zone_list],
+      items: [this.area_list],
       listeners: {
         scope: this,
         hide: function() {
-          if (this.getComponent('zones').getActiveItem() != this.zone_list) {
-            this.getComponent('zones').setCard(this.zone_list);
+          if (this.getComponent('areas').getActiveItem() != this.area_list) {
+            this.getComponent('areas').setCard(this.area_list);
           }
         }
       }
@@ -171,10 +171,10 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
 
     ATN.UIPanel.superclass.initComponent.call(this);
 
-    ATN.controller.on('back_zone', this.onUIZoneBack, this);
-    ATN.controller.on('after_zone_save', function() {
-      this.zone_list.getStore().load();
-      this.onUIZoneBack();
+    ATN.controller.on('back_area', this.onUIAreaBack, this);
+    ATN.controller.on('after_area_save', function() {
+      this.area_list.getStore().load();
+      this.onUIAreaBack();
     }, this);
     ATN.controller.on('back_message', this.onUIMessageBack, this);
     ATN.controller.on('after_message_save', function() {
@@ -198,7 +198,7 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       });
     }, this);
 
-    ATN.ZoneStore.load();
+    ATN.AreaStore.load();
     ATN.MessageStore.load();
   },
 
@@ -216,14 +216,14 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     this.fireEvent('navigate', this, {});
   },
 
-  onZoneItemTap: function(dataview, index, el, e) {
+  onAreaItemTap: function(dataview, index, el, e) {
     var store = dataview.getStore(),
         record = store.getAt(index);
 
-    this.getComponent('zones').setCard(ATN.zone_form, {
+    this.getComponent('areas').setCard(ATN.area_form, {
       type: 'slide'
     });
-    ATN.zone_form.load(record);
+    ATN.area_form.load(record);
 
 //    if(Ext.is.Phone) {
 //      this.navBar.setTitle(title || this.title);
@@ -232,7 +232,7 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
 //    this.toggleBackButton();
 //    this.navBar.doLayout();
 
-    this.fireEvent('navigate', this, 'zone', record);
+    this.fireEvent('navigate', this, 'area', record);
   },
 
   onMessageItemTap: function(dataview, index, el, e) {
@@ -248,11 +248,11 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     this.fireEvent('navigate', this, 'message', record);
   },
 
-  onUIZoneBack: function() {
-    var zone_list = this.getComponent('zones');
+  onUIAreaBack: function() {
+    var area_list = this.getComponent('areas');
 
-    if(zone_list.getActiveItem() != this.zone_list) {
-      zone_list.setCard(this.zone_list, {
+    if(area_list.getActiveItem() != this.area_list) {
+      area_list.setCard(this.area_list, {
         type: 'slide',
         reverse: true
       });

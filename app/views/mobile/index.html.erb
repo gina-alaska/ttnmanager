@@ -7,19 +7,36 @@
         Ext.Msg.alert('Notice', 'Not Implemented Yet');
       },
       'save_area': function() {
+        var loading = new Ext.MessageBox();
+        loading.show({
+          msg: 'Saving Area Status...',
+          buttons: [{
+            text: 'Dismiss',
+            itemId: 'dismiss'
+          }]
+        });
         Ext.ux.Ajax.formSubmit({
           "url": '/areas',
           "form": this.area_form,
           "root": 'area',
           listeners: {
             scope: this,
-            success: function(response, options) {
-              this.controller.fireEvent('after_area_save');
+            success: function(response, options, results) {
+              loading.destroy();
+              this.controller.fireEvent('after_area_save', Ext.ModelMgr.create(results.area, 'Area'));
             }
           }
         });
       },
       'save_message': function() {
+        var loading = new Ext.MessageBox();
+        loading.show({
+          msg: 'Saving Message...',
+          buttons: [{
+            text: 'Dismiss',
+            itemId: 'dismiss'
+          }]
+        });
         Ext.ux.Ajax.formSubmit({
           "url": '/alerts',
           "form": this.message_form,
@@ -27,6 +44,7 @@
           listeners: {
             scope: this,
             success: function(response, options, results) {
+              loading.destroy();
               this.controller.fireEvent('after_message_save', Ext.ModelMgr.create(results.alert, 'Message'));
             }
           }

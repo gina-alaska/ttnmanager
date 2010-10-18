@@ -1,22 +1,42 @@
-set :application, "set your application name here"
-set :repository,  "set your repository location here"
+set :stages, %w(production qa)
+set :default_stage, "qa"
 
-set :scm, :subversion
-# Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
+require 'capistrano/ext/multistage'
 
-role :web, "your web-server here"                          # Your HTTP server, Apache/etc
-role :app, "your app-server here"                          # This may be the same as your `Web` server
-role :db,  "your primary db-server here", :primary => true # This is where Rails migrations will run
-role :db,  "your slave db-server here"
+depend :remote, :command, "gem"
+depend :remote, :gem, :rake, ">=0.8.1"
 
-# If you are using Passenger mod_rails uncomment this:
-# if you're still using the script/reapear helper you will need
-# these http://github.com/rails/irs_process_scripts
+set :application, 'atnmanager'
+set :use_sudo, false
+set :runner, 'webdev'
 
-# namespace :deploy do
-#   task :start {}
-#   task :stop {}
-#   task :restart, :roles => :app, :except => { :no_release => true } do
-#     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-#   end
-# end
+# If you aren't deploying to /u/apps/#{application} on the target
+# servers (which is the default), you can specify the actual location
+# via the :deploy_to variable:
+set :deploy_to, "/www/#{application}"
+
+# If you aren't using Subversion to manage your source code, specify
+# your SCM below:
+set :scm, :git
+# Remote caching will keep a local git repo on the server you're deploying to and simply run a fetch from that rather than an entire clone. This is probably the best option and will only fetch the differences each deploy
+#
+#set :remote_cache, "git-cache"
+#set :deploy_via, :remote_cache
+set :git_enable_submodules, 1
+set :repository,  "git://gitorious.gina.alaska.edu/atn/manager.git"
+#set :branch, "deploy"
+set :rails_env, 'production'
+
+task :after_update_code do
+  run "mkdir -p #{deploy_to}/#{shared_dir}/config"
+  run "ln -nfs #{deploy_to}/#{shared_dir}/config/database.yml #{release_path}/config/database.yml"
+  run "ln -nfs #{deploy_to}/#{shared_dir}/config/settings.yml #{release_path}/config/settings.yml"
+end
+
+namespace :deploy do
+  desc "Restart task for passenger"
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "touch #{current_path}/tmp/restart.txt"
+  end
+end
+

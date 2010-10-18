@@ -68,11 +68,10 @@ ATN.area_status = new Ext.Panel({
     xtype: 'button',
     text: 'Send Email Update',
     handler: function() {
-      ATN.controller.fireEvent('email_area', this.ctxAreaRecord);
+      ATN.controller.fireEvent('email_area');
     }
   }],
   load: function(area) {
-    this.ctxAreaRecord = area;
     this.getComponent('area-toolbar').setTitle(area.get('name'));
     this.getComponent('status-text').update(this.tpl.apply(area.data));
   }

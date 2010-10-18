@@ -1,8 +1,8 @@
 class Message < ActiveRecord::Base
   has_and_belongs_to_many :areas
 
-  named_scope :soil, :conditions => { :group => 'soil' }
-  named_scope :snow, :conditions => { :group => 'snow' }
-  named_scope :operational, :conditions => { :group => 'operational' }
-  named_scope :alert, :conditions => { :group => 'alert' }
+  scope :soil, :conditions => { :group => 'soil' }
+  scope :snow, :conditions => { :group => 'snow' }
+  scope :operational, :conditions => { :group => 'operational' }
+  scope :alert, :conditions => { :group => 'alert' }
 end

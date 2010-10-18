@@ -82,6 +82,7 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
         }]
       }],
       store: ATN.AreaStore,
+      loadingText: 'Loading area data...',
       tpl: '<tpl for="."><div class="area">{name}: <span class="status-{travel_status}">{travel_status}</span></div></tpl>',
       itemSelector: 'div.area',
       listeners: {
@@ -96,6 +97,7 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
       tpl: '<tpl for="."><div class="message"><tpl if="system == false">{updated_at:date("Y/m/d")}: </tpl>{text}</div></tpl>',
       itemSelector: 'div.message',
       emptyText: 'No Messages Found',
+      loadingText: 'Loading messages...',
       dockedItems: [{
         dock: 'top',
         xtype: 'toolbar',
@@ -156,7 +158,7 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     }, {
       itemId: 'messages',
       title: 'Messages',
-      iconCls: 'bolt',
+      iconCls: 'mail',
       layout: 'card',
       items: [this.message_list],
       listeners: {
@@ -172,9 +174,9 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
     ATN.UIPanel.superclass.initComponent.call(this);
 
     ATN.controller.on('back_area', function() { this.onUIAreaBack(false) }, this);
-    ATN.controller.on('after_area_save', function() {
+    ATN.controller.on('after_area_save', function(area) {
       this.area_list.getStore().load();
-      this.onUIAreaBack();
+      this.onUIAreaBack(area);
     }, this);
     ATN.controller.on('back_message', function() { this.onUIMessageBack(false) }, this);
     ATN.controller.on('after_message_save', function(message) {
@@ -257,6 +259,7 @@ ATN.UIPanel = Ext.extend(Ext.TabPanel, {
         break;
       case ATN.area_form:
         if(this.ctxAreaRecord) {
+          console.log(area);
           if(area) { ATN.area_status.load(area); }
           returnTo = ATN.area_status;
         } else {

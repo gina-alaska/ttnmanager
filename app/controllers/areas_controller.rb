@@ -10,7 +10,10 @@ class AreasController < ApplicationController
       format.json {
         render :json => {
           :areas => @areas
-        }.to_json(:methods => [:alerts, :operationals, :soil, :snow])
+        }.to_json(:methods => [:alerts, :operationals, :soil, :snow]), :callback => params[:callback]
+      }
+      format.xml {
+        render :xml => @areas.to_xml(:root => :areas, :methods => [:alerts, :operationals, :soil, :snow])
       }
     end
   end

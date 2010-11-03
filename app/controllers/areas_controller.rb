@@ -60,6 +60,10 @@ class AreasController < ApplicationController
         :flash => "Error Updating Area Information"
       }
     end
+   
+    
+    FileUtils.rm('public/images/overview.png') if File.exists? 'public/images/overview.png'
+    FileUtils.rm('public/images/overview.jpg') if File.exists? 'public/images/overview.jpg'
 
     respond_to do |format|
       format.json { render :json => response.to_json(:methods => [:alerts, :operationals, :soil, :snow]) }

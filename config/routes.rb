@@ -52,7 +52,11 @@ Atnmanager::Application.routes.draw do
 
   resources :messages
   resources :alerts
-  resources :areas
+  resources :areas do
+    collection do
+      get 'overview'
+    end
+  end
 
 
   match 'm(.:format)' => 'mobile#index', :as => :mobile

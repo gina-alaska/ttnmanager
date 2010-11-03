@@ -13,7 +13,7 @@ class AreasController < ApplicationController
         }.to_json(:methods => [:alerts, :operationals, :soil, :snow]), :callback => params[:callback]
       }
       format.xml {
-        render :xml => @areas.to_xml(:root => :areas, :methods => [:alerts, :operationals, :soil, :snow])
+        render :xml => @areas.to_xml(:root => :areas, :only => [:name,:travel_status,:full_text, :mobile_text, :updated_at], :methods => [:alerts, :operationals, :soil, :snow])
       }
     end
   end

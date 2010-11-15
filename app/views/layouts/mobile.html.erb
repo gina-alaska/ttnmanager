@@ -12,12 +12,18 @@
 	<!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>-->
 
 	<!-- Sencha Touch JS -->
-	<script type="text/javascript" src="/sencha/ext-touch-debug.js"></script>
-
-  <script type="text/javascript" src="/javascripts/mobile.js"></script>
-  <script type="text/javascript" src="/javascripts/mobile_pages.js"></script>
+	<script type="text/javascript" src="/sencha/sencha-touch-debug.js"></script>
+  <!--<script type="text/javascript" src="/javascripts/mobile_pages.js"></script>-->
  </head>
  <body>
+ <script type="text/javascript" src="/javascripts/touch.js"></script>
+ <script type="text/javascript" src="/javascripts/mobile/models/area.js"></script>
+ <script type="text/javascript" src="/javascripts/mobile/models/area_page.js"></script>
+ <script type="text/javascript" src="/javascripts/mobile/models/message.js"></script>
+ <script type="text/javascript" src="/javascripts/mobile/controllers/areas.js"></script>
+ <script type="text/javascript" src="/javascripts/mobile/controllers/home.js"></script>
+ <script type="text/javascript" src="/javascripts/mobile/views/area_list.js"></script>
+ <script type="text/javascript" src="/javascripts/mobile/views/login.js"></script>
  <%= yield %>
  </body>
  </html>

@@ -1,5 +1,5 @@
-set :stages, %w(production qa)
-set :default_stage, "qa"
+set :stages, %w(production edge)
+set :default_stage, "edge"
 
 require 'capistrano/ext/multistage'
 

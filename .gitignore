@@ -5,4 +5,7 @@ config/database.yml
 db/*.sqlite3
 log/*.log
 tmp/**/*
-public/images/overview.*
+public/images/overview*
+*.swp
+db/data
+.sass-cache

@@ -1,0 +1,108 @@
+// This import applies a global reset to any page that imports this stylesheet.
+@import "blueprint/reset";
+
+// To configure blueprint, edit the partials/base.sass file.
+@import "partials/base";
+
+// Import all the default blueprint modules so that we can access their mixins.
+@import "blueprint";
+
+
+body.bp {
+  @include blueprint-typography(true);
+  @include blueprint-utilities;
+  @include blueprint-debug;
+  @include blueprint-interaction;
+}
+
+form.bp {
+  @include blueprint-form;
+}
+
+// Page layout can be done using mixins applied to your semantic classes and IDs:
+body.atn {
+  #container {
+    @include container;
+  }
+  #header, #footer {
+    @include column(24);
+  }
+  #content {
+    // true means it's the last column in the row
+    @include column(24, true);
+  }
+
+  #footer {
+    text-align: center;
+    
+    li {
+      display: inline;
+    }
+    a {
+      padding: 1em;
+      font-size: 1.2em;
+    }
+  }
+}
+
+
+.overview_img {
+  @include column(24);
+}
+
+.status-grid {
+  .container {
+    @include container;
+  }
+
+  .column1 {
+    @include column(12);
+  }
+  .column2 {
+    @include column(12, true);
+  }
+
+  td {
+    text-align: center;
+    padding: 1em;
+  }
+
+  .Open {
+    color: green;
+  }
+
+  .Closed {
+    color: red;
+  }
+
+  .area {
+    padding: 2em;
+    
+    h3 {
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      text-decoration: underline;
+      margin-bottom: 0.3em;
+    }
+    h4 {
+      text-align: center;
+      margin-bottom: 0.3em;
+    }
+
+    label {
+      text-decoration: underline;
+    }
+
+    .messages {
+      margin-left: 1em;
+    }
+  }
+}
+
+h1 {
+  font-size: 3em;
+  text-align: center;
+  font-weight: bold;
+}
+

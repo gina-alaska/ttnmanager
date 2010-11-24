@@ -1,0 +1,22 @@
+CACHE MANIFEST
+#rev<%= Time.now.to_i %>
+
+<%= stylesheet_path("/sencha/resources/css/atn.css") %>
+
+<% if Rails.env.production? -%>
+
+<%= javascript_path("cache/app.js") %>
+<%= javascript_path("cache/mobile.js") %>
+
+<% else -%>
+
+<%= javascript_path("/sencha/sencha-touch-debug.js") %>
+<%= javascript_path('touch.js') %>
+<% Dir.glob('public/javascripts/mobile/**/*.js').collect { |f| f.gsub('public/javascripts/', '') }.each do |js| -%>
+<%= javascript_path(js) %>
+<% end -%>
+
+<% end -%>
+
+NETWORK:
+/

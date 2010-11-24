@@ -10,7 +10,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101019204102) do
+ActiveRecord::Schema.define(:version => 20101123235532) do
+
+  create_table "alerts", :force => true do |t|
+    t.integer  "area_id"
+    t.text     "text"
+    t.boolean  "active",     :default => true,  :null => false
+    t.boolean  "system",     :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "alerts", :force => true do |t|
     t.integer  "area_id"
@@ -29,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20101019204102) do
     t.datetime      "created_at"
     t.datetime      "updated_at"
     t.multi_polygon "geom",          :limit => nil, :srid => 9102634
+    t.text          "notes"
   end
 
   add_index "areas", ["geom"], :name => "index_areas_on_geom", :spatial => true
@@ -42,6 +52,28 @@ ActiveRecord::Schema.define(:version => 20101019204102) do
     t.string   "mobile_text"
     t.string   "full_text"
     t.string   "group",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "messages", :force => true do |t|
+    t.string   "mobile_text"
+    t.string   "full_text"
+    t.string   "group",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "messages_zones", :id => false, :force => true do |t|
+    t.integer "zone_id"
+    t.integer "message_id"
+  end
+
+  create_table "zones", :force => true do |t|
+    t.string   "name"
+    t.string   "travel_status"
+    t.string   "snow_status"
+    t.string   "soil_status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

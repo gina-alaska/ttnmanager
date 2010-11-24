@@ -1,32 +1,14 @@
- <!DOCTYPE html>
- <html>
- <head>
-  <meta charset="utf-8">
-  <title>ATN Manager</title>
-
-	<!-- Sencha Touch CSS -->
-	<link rel="stylesheet" href="/sencha/resources/css/sencha-touch.css" type="text/css">
-  <link rel="stylesheet" href="stylesheets/mobile.css" type="text/css">
-
-	<!-- Google Maps JS -->
-	<!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>-->
-
-	<!-- Sencha Touch JS -->
-	<script type="text/javascript" src="/sencha/sencha-touch-debug.js"></script>
-  <!--<script type="text/javascript" src="/javascripts/mobile_pages.js"></script>-->
- </head>
- <body>
- <script type="text/javascript" src="/javascripts/touch.js"></script>
- <script type="text/javascript" src="/javascripts/mobile/models/area.js"></script>
- <script type="text/javascript" src="/javascripts/mobile/models/area_page.js"></script>
- <script type="text/javascript" src="/javascripts/mobile/models/message.js"></script>
- <script type="text/javascript" src="/javascripts/mobile/controllers/areas.js"></script>
- <script type="text/javascript" src="/javascripts/mobile/controllers/home.js"></script>
- <script type="text/javascript" src="/javascripts/mobile/views/main_menu.js"></script>
- <script type="text/javascript" src="/javascripts/mobile/views/area_list.js"></script>
- <script type="text/javascript" src="/javascripts/mobile/views/login.js"></script>
- <script type="text/javascript" src="/javascripts/mobile/views/home.js"></script>
- <script type="text/javascript" src="/javascripts/mobile/views/show_area.js"></script>
- <%= yield %>
- </body>
- </html>
+<!DOCTYPE html>
+<html <%#= Rails.env.production? 'manifest="m.manifest"' : '' -%>>
+<head>
+<meta charset="utf-8">
+<title>ATN Manager</title>
+<%= stylesheet_link_tag("/sencha/resources/css/atn.css") %>
+<%= javascript_include_tag("/sencha/sencha-touch#{Rails.env.production? ? '' : '-debug'}.js", 'touch.js', :cache => 'app') %>
+</head>
+<body>
+  <%= yield %>
+</body>
+<% mobile = Dir.glob('public/javascripts/mobile/**/*.js').collect { |f| f.gsub('public/javascripts/', '') } -%>
+<%= javascript_include_tag(mobile, :cache => 'mobile') %>
+</html>

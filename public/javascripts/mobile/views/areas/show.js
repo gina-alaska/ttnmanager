@@ -1,5 +1,35 @@
-ATN.views.ShowArea = Ext.extend(Ext.Panel, {
+if(!ATN.views.areas) { ATN.views.areas = {}; }
+
+ATN.views.areas.Show = Ext.extend(Ext.Panel, {
   initComponent: function() {
+    this.actions = new Ext.ActionSheet({
+      hideOnMaskTap: true,
+      items: [{
+        xtype: 'button',
+        text: 'Edit Travel Status',
+        scope: this,
+        handler: function() {
+          this.actions.hide();
+          top.location.hash = 'areas/edit/' + this.area.get('id');
+        }
+      }, {
+        xtype: 'button',
+        text: 'Send Email',
+        scope: this,
+        handler: function() {
+          this.actions.hide();
+          Ext.Msg.alert('Warning', 'Not Implemented Yet');
+        }
+      },{
+        text: 'Cancel',
+        ui: 'decline',
+        scope: this,
+        handler: function() {
+          this.actions.hide();
+        }
+      }]
+    });
+
     Ext.apply(this, {
       scroll: 'vertical',
       dockedItems: [{
@@ -7,33 +37,32 @@ ATN.views.ShowArea = Ext.extend(Ext.Panel, {
         dock: 'top',
         title: 'Area Status',
         xtype: 'toolbar',
-        defaults: { ui: 'plain', iconMask: true },
         items: [{
           scope: this,
-          iconCls: 'arrow_left',
+          ui: 'back',
+          text: 'Back',
           handler: function() {
             ATN.dispatch({
               controller: 'areas',
-              action: 'close_status'
+              action: 'index',
+              back: true,
+              historyUrl: 'areas'
             });
           }
         }, { xtype: 'spacer' }, {
           scope: this,
-          iconCls: 'compose',
+          text: 'Actions',
           handler: function() {
-            ATN.dispatch({
-              controller: 'areas',
-              action: 'show_list'
-            });
+            this.actions.show();
           }
         }]
       }],
       tpl: new Ext.XTemplate(
         '<tpl for=".">' +
         '<div class="area_status">' +
-          '<div><label>Travel Status: </label><span class="status-{travel_status}">{travel_status}</span></div>' +
+          '<div><label>Travel Status</label>: <span class="{travel_status}">{travel_status}</span></div>' +
           '<tpl if="notes.length">' +
-            '<div><label>Notes: </label><span class="notes">{notes}</span></div>' +
+            '<div><label>Notes</label>: <span class="notes">{notes}</span></div>' +
           '</tpl>' +
           '<tpl if="soil.length">' +
             '<h2>Soil Status:</h2>' +
@@ -74,19 +103,14 @@ ATN.views.ShowArea = Ext.extend(Ext.Panel, {
       bodyStyle: 'padding: 0.5em;',
       items: [{
         itemId: 'status-text'
-      }, {
-        xtype: 'button',
-        text: 'Send Email Update',
-        handler: function() {
-          ATN.controller.fireEvent('email_area');
-        }
       }]
     });
-    ATN.views.ShowArea.superclass.initComponent.call(this);
+    ATN.views.areas.Show.superclass.initComponent.call(this);
   },
   load: function(area) {
+    this.area = area;
     this.getComponent('area-toolbar').setTitle(area.get('name'));
     this.getComponent('status-text').update(this.tpl.apply(area.data));
   }
 });
-Ext.reg('show_area', ATN.views.ShowArea);
+Ext.reg('areas_show', ATN.views.areas.Show);

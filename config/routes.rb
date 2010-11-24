@@ -58,7 +58,7 @@ Atnmanager::Application.routes.draw do
     end
   end
 
-
+  match 'docs' => 'doc#index'
   match 'm(.:format)' => 'mobile#index', :as => :mobile
   root :to => 'welcome#index'
 

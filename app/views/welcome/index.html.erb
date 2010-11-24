@@ -1,36 +1,9 @@
-<h1>Welcome to the ATN Manager</h1>
-
 <div class="overview_img" style="text-align:center;">
-  <h3>Current Travel Status</h3>
-  <img src="<%= areas_path -%>/overview.png" alt="Tundra Area Travel Status" />
-  <p>
-    If you are using Chrome, Android or an iPhone access the mobile version of the website here: 
-    <%= link_to 'http://atn.gina.alaska.edu/m', 'http://atn.gina.alaska.edu/m' -%>
-  </p>
+  <%= link_to image_tag("#{areas_path}/overview.png?size=preview",  :alt=>"Tundra Area Travel Status"), "#{areas_path}/overview.png?size=large", :target => '_blank' -%>
 </div>
-
-<div class="documentation">
-
-<h1>Available REST Endpoints</h1>
-
-<ul>
-  <li>Area Status List: http://atn.gina.alaska.edu/areas.(format)?(callback=callback_function_name) </li>
-  <ul>
-    <li>Required parameters</li>
-    <ul>
-      <li><i>format</i>: Specify the format the data should be return in, valid options are XML and JSON</li>
-    </ul>
-    <li>Optional parameters</li>
-    <ul>
-      <li><i>callback=callback_function_name</i>: <b>Only applies to JSON requests.</b><br />
-        Specify a callback function to allow cross site requests, where callback_function_name is a javascript function defined by the requesting site.</li>
-    </ul>
-    <li>Example URLs</li>
-    <ul>
-      <li><%= link_to 'http://atn.gina.alaska.edu/areas.xml', 'http://atn.gina.alaska.edu/areas.xml' -%></li>
-      <li><%= link_to 'http://atn.gina.alaska.edu/areas.json','http://atn.gina.alaska.edu/areas.json' -%></li>
-      <li><%= link_to 'http://atn.gina.alaska.edu/areas.json?callback=loadJsonData','http://atn.gina.alaska.edu/areas.json?callback=loadJsonData' -%></li>
-    </ul>
-  </ul>
-</ul>
+<div class="status-grid">
+  <div class="column1"><%= render :partial => 'status', :locals => { :area => @areas.shift } %></div>
+  <div class="column2"><%= render :partial => 'status', :locals => { :area => @areas.shift } %></div>
+  <div class="column1"><%= render :partial => 'status', :locals => { :area => @areas.shift } %></div>
+  <div class="column2"><%= render :partial => 'status', :locals => { :area => @areas.shift } %></div>
 </div>

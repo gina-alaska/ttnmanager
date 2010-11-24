@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html<%= Rails.env.production? ? ' manifest="m.manifest"' : '' -%>>
+<% if Rails.env.production? -%>
+<html manifest="m.manifest">
+<% else -%>
+<html>
+<% end -%>
 <head>
 <meta charset="utf-8">
 <title>ATN Manager</title>

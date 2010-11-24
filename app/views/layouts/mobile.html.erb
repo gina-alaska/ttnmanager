@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <title>ATN Manager</title>
 <%= stylesheet_link_tag("/sencha/resources/css/atn.css") %>
-<%= javascript_include_tag("/sencha/sencha-touch#{Rails.env.production? ? '' : '-debug'}.js", 'touch.js', :cache => 'app') %>
+<%= javascript_include_tag("/sencha/sencha-touch#{Rails.env.production? ? '' : '-debug'}.js", 'touch.js', :cache => 'touch') %>
 </head>
 <body>
   <%= yield %>
 </body>
 <% mobile = Dir.glob('public/javascripts/mobile/**/*.js').collect { |f| f.gsub('public/javascripts/', '') } -%>
-<%= javascript_include_tag(mobile, :cache => 'mobile') %>
+<%= javascript_include_tag(mobile, :cache => 'atn') %>
 </html>

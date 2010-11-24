@@ -52,10 +52,18 @@ class AreasController < ApplicationController
         :flash => "Error Updating Area Information"
       }
     end
-   
-    
+
+    #FIXME: Do this dynamically
     FileUtils.rm('public/images/overview.png') if File.exists? 'public/images/overview.png'
+    FileUtils.rm('public/images/overview_small.png') if File.exists? 'public/images/overview_small.png'
+    FileUtils.rm('public/images/overview_medium.png') if File.exists? 'public/images/overview_medium.png'
+    FileUtils.rm('public/images/overview_large.png') if File.exists? 'public/images/overview_large.png'
+    FileUtils.rm('public/images/overview_preview.png') if File.exists? 'public/images/overview_preview.png'
     FileUtils.rm('public/images/overview.jpg') if File.exists? 'public/images/overview.jpg'
+    FileUtils.rm('public/images/overview_small.jpg') if File.exists? 'public/images/overview_small.jpg'
+    FileUtils.rm('public/images/overview_medium.jpg') if File.exists? 'public/images/overview_medium.jpg'
+    FileUtils.rm('public/images/overview_large.jpg') if File.exists? 'public/images/overview_large.jpg'
+    FileUtils.rm('public/images/overview_preview.jpg') if File.exists? 'public/images/overview_preview.jpg'
 
     respond_to do |format|
       format.json { render :json => response.to_json(:methods => [:alerts, :operationals, :soil, :snow], :except => [:geom]) }

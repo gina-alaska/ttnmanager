@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html <%#= Rails.env.production? 'manifest="m.manifest"' : '' -%>>
+<html<%= Rails.env.production? ? ' manifest="m.manifest"' : '' -%>>
 <head>
 <meta charset="utf-8">
 <title>ATN Manager</title>
 <%= stylesheet_link_tag("/sencha/resources/css/atn.css") %>
-<%= javascript_include_tag("/sencha/sencha-touch#{Rails.env.production? ? '' : '-debug'}.js", 'touch.js', :cache => 'touch') %>
+<%= javascript_include_tag("/sencha/sencha-touch#{Rails.env.production? ? '' : '-debug'}.js", 'touch.js', :cache => 'cache/touch') %>
 </head>
 <body>
   <%= yield %>
 </body>
 <% mobile = Dir.glob('public/javascripts/mobile/**/*.js').collect { |f| f.gsub('public/javascripts/', '') } -%>
-<%= javascript_include_tag(mobile, :cache => 'atn') %>
+<%= javascript_include_tag(mobile, :cache => 'cache/atn') %>
 </html>

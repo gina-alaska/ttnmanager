@@ -5,7 +5,6 @@ class User < ActiveRecord::Base
   include Authentication::ByCookieToken
 
   validates :login, :presence   => true,
-                    :uniqueness => true,
                     :length     => { :within => 3..40 },
                     :format     => { :with => Authentication.login_regex, :message => Authentication.bad_login_message }
 
@@ -17,6 +16,11 @@ class User < ActiveRecord::Base
                     :uniqueness => true,
                     :format     => { :with => Authentication.email_regex, :message => Authentication.bad_email_message },
                     :length     => { :within => 6..100 }
+
+  validates :identity_url,
+                    :presence   => true,
+                    :uniqueness => true
+
   validates :mobile_pin,
                     :uniqueness => true,
                     :length     => { :maximum => 18 },
@@ -27,7 +31,9 @@ class User < ActiveRecord::Base
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :name, :mobile_pin
+  attr_accessor :mobile_pin_request
+  
+  attr_accessible :login, :email, :name, :mobile_pin, :mobile_pin_request
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   # uff.  this is really an authorization, not authentication routine.
   # We really need a Dispatch Chain here or something.
@@ -39,8 +45,9 @@ class User < ActiveRecord::Base
     u && u.authenticated?(password) ? u : nil
   end
 
-  def self.accept_pin_for(id)
+  def self.create_pin_for(id)
     user = User.find_by_id(id)
+    user.mobile_pin = rand(99999)
     user.mobile_pin_accepted = true
     user.save!
   end  

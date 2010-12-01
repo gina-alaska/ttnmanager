@@ -9,8 +9,7 @@ class SessionsController < ApplicationController
     if using_open_id?
       open_id_authentication
     elsif using_gina_id?
-      params[:openid_identifier] = "http://id.gina.alaska.edu/#{params[:gina_username]}"
-      open_id_authentication
+      open_id_authentication("http://id.gina.alaska.edu/#{params[:gina_username]}")
     elsif using_pin?
       pin_authentication
     else
@@ -26,10 +25,10 @@ class SessionsController < ApplicationController
     params[:pin]
   end
 
-  def open_id_authentication
+  def open_id_authentication(openid_url = open_id_identifier)
     # Pass optional :required and :optional keys to specify what sreg fields you want.
     # Be sure to yield registration, a third argument in the #authenticate_with_open_id block.
-    authenticate_with_open_id(open_id_identifier,
+    authenticate_with_open_id(openid_url,
             :required => [ :nickname, :email ], :optional => :fullname) do |result, identity_url, registration|
       case result.status
       when :missing
@@ -41,7 +40,7 @@ class SessionsController < ApplicationController
       when :failed
         failed_login "Sorry, the OpenID verification failed"
       when :successful
-        if user = User.find_by_identity_url(open_id_identifier)
+        if user = User.find_by_identity_url(identity_url)
           assign_registration_attributes!(user, registration)
 
           if user.save
@@ -52,14 +51,14 @@ class SessionsController < ApplicationController
           end
         else
           user = User.new
+          user.identity_url = identity_url
           assign_registration_attributes!(user, registration)
 
           if user.save
             successful_login(user, true)
             redirect_to(settings_path)
           else
-            ::Rails.logger.info user.errors.inspect
-            failed_login "Could not create a new user with that identity url" +
+            failed_login "Error while creating a new user account: <br />" +
               user.errors.full_messages.to_sentence
           end
         end

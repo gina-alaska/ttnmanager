@@ -15,19 +15,21 @@
 </div>
 <% end -%>
 
-<p><%= label_tag 'name' %>:<br/>
+<p><%= f.label 'name' %>
 <%= f.text_field :name %></p>
 
-<p><%= label_tag 'email' %>:<br/>
+<p><%= f.label 'email' %>
 <%= f.text_field :email %></p>
 
-<p><%= label_tag 'mobile_pin' %>:<br/>
-<%= f.text_field :mobile_pin %><br />
-</p>
+<p><%= f.label 'mobile_pin' %>
+<%= f.text_field :mobile_pin, :readonly => :readonly %></p>
+
+<p><%= f.check_box(:mobile_pin_request) %><%= f.label 'mobile_pin_request', 'Request a Mobile Pin' %></p>
+<br />
 <p><%= submit_tag 'Update' %></p>
 <% end -%>
 <div class="note">
   <p>Please verify the correct email address has been entered above when requesting a mobile pin code.</p>
-  <p>All requests for mobile pins will be reviewed before becoming active and will be notified by email when this is complete.</p>
+  <p>All requests for mobile pins will be reviewed before becoming active and once accepted notifications will be sent by email.</p>
 </div>
 </div>

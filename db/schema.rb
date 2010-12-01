@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101130203419) do
+ActiveRecord::Schema.define(:version => 20101201003807) do
 
   create_table "alerts", :force => true do |t|
     t.integer  "area_id"
@@ -108,8 +108,6 @@ ActiveRecord::Schema.define(:version => 20101130203419) do
     t.boolean  "mobile_pin_accepted",                      :default => false, :null => false
     t.string   "mobile_pin"
   end
-
-  add_index "users", ["login"], :name => "index_users_on_login", :unique => true
 
   create_table "zones", :force => true do |t|
     t.string   "name"

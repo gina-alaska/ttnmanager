@@ -31,6 +31,7 @@ task :after_update_code do
   run "mkdir -p #{deploy_to}/#{shared_dir}/config"
   run "ln -nfs #{deploy_to}/#{shared_dir}/config/database.yml #{release_path}/config/database.yml"
   run "ln -nfs #{deploy_to}/#{shared_dir}/config/settings.yml #{release_path}/config/settings.yml"
+  run "cd #{release_path} && bundle install"
 end
 
 namespace :deploy do

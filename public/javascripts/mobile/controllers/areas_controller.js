@@ -15,7 +15,7 @@ Ext.regController('areas', {
         i = areas.find('id', params.id),
         r = areas.getAt(i);
     
-    if (r) {
+    if (this.areas && r) {
       var status = this.areas.add({
         itemId: 'show_area',
         xtype: 'areas_show'
@@ -36,7 +36,7 @@ Ext.regController('areas', {
         i = areas.find('id', params.id),
         r = areas.getAt(i);
 
-    if(!r) {
+    if(!this.areas || !r) {
       return this.show_list();
     }
 
@@ -55,11 +55,11 @@ Ext.regController('areas', {
     var editor = this.areas.getComponent('area_edit'),
         values = editor.getValues(),
         area = {},
-        loading = new Ext.LoadMask(ATN.viewport.getEl(), {
+        saving = new Ext.LoadMask(ATN.viewport.getEl(), {
           msg: 'Saving...'
         });
 
-    loading.show();
+    saving.show();
 
     for(var ii in values) {
       area['area[' + ii + ']'] = values[ii];
@@ -78,7 +78,7 @@ Ext.regController('areas', {
         if(response.getAllResponseHeaders()['content-type'].match(/json/)) {
           json = Ext.decode(response.responseText);
         }
-        loading.hide();
+        saving.hide();
         if(json.flash) {
           Ext.Msg.alert(json.success ? 'Success' : 'Error', json.flash);
         } else {
@@ -99,10 +99,10 @@ Ext.regController('areas', {
       failure: function(response, options) {
         var json = {};
 
-        if(response.getAllResponseHeaders()['content-type'].match(/json/)) {
+        if(response.getAllResponseHeaders()['content-type'] && response.getAllResponseHeaders()['content-type'].match(/json/)) {
           json = Ext.decode(response.responseText);
         }
-        loading.hide();
+        saving.hide();
         if(json.flash) {
           Ext.Msg.alert('Error', json.flash);
         } else {

@@ -1,0 +1,33 @@
+<div class="userform">
+<%= form_for @user do |f| -%>
+
+<% if @user.errors.any? -%>
+<div class="error_explanation">
+  <h2>
+    <%= pluralize(@user.errors.count, "error") %>
+    prohibited settings from being saved
+  </h2>
+  <ul>
+    <% @user.errors.full_messages.each do |msg| -%>
+    <li><%= msg -%></li>
+    <% end -%>
+  </ul>
+</div>
+<% end -%>
+
+<p><%= label_tag 'name' %>:<br/>
+<%= f.text_field :name %></p>
+
+<p><%= label_tag 'email' %>:<br/>
+<%= f.text_field :email %></p>
+
+<p><%= label_tag 'mobile_pin' %>:<br/>
+<%= f.text_field :mobile_pin %><br />
+</p>
+<p><%= submit_tag 'Update' %></p>
+<% end -%>
+<div class="note">
+  <p>Please verify the correct email address has been entered above when requesting a mobile pin code.</p>
+  <p>All requests for mobile pins will be reviewed before becoming active and will be notified by email when this is complete.</p>
+</div>
+</div>

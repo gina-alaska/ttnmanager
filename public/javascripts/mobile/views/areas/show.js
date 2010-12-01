@@ -60,9 +60,9 @@ ATN.views.areas.Show = Ext.extend(Ext.Panel, {
       tpl: new Ext.XTemplate(
         '<tpl for=".">' +
         '<div class="area_status">' +
-          '<div><label>Travel Status</label>: <span class="{travel_status}">{travel_status}</span></div>' +
+          '<div><label>Travel Status:</label> <span class="{travel_status}">{travel_status}</span></div>' +
           '<tpl if="notes.length">' +
-            '<div><label>Notes</label>: <span class="notes">{notes}</span></div>' +
+            '<div><label>Notes:</label> <span class="notes">{notes}</span></div>' +
           '</tpl>' +
           '<tpl if="soil.length">' +
             '<h2>Soil Status:</h2>' +
@@ -96,6 +96,7 @@ ATN.views.areas.Show = Ext.extend(Ext.Panel, {
               '</div>' +
             '</tpl>' +
           '</tpl>' +
+          '<div><label>Last Updated:</label> <span>{updated_at:date("Y/m/d g:i:sA T")}</span></div>' +
         '</div>' +
         '</tpl>',
         { compiled: true }

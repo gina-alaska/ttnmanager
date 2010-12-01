@@ -1,4 +1,14 @@
 Atnmanager::Application.routes.draw do
+  resources :users
+
+  resource :session, :only => [:new, :create, :destroy]
+
+  match 'login' => 'sessions#new', :as => :login
+
+  match 'logout' => 'sessions#destroy', :as => :logout
+
+  match 'settings' => 'users#edit', :as => :settings
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

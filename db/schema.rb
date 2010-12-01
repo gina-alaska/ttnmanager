@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101123235532) do
+ActiveRecord::Schema.define(:version => 20101130203419) do
 
   create_table "alerts", :force => true do |t|
     t.integer  "area_id"
@@ -48,6 +48,21 @@ ActiveRecord::Schema.define(:version => 20101123235532) do
     t.integer "message_id"
   end
 
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
   create_table "messages", :force => true do |t|
     t.string   "mobile_text"
     t.string   "full_text"
@@ -68,6 +83,33 @@ ActiveRecord::Schema.define(:version => 20101123235532) do
     t.integer "zone_id"
     t.integer "message_id"
   end
+
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "users", :force => true do |t|
+    t.string   "login",                     :limit => 40
+    t.string   "name",                      :limit => 100, :default => ""
+    t.string   "identity_url"
+    t.string   "email",                     :limit => 100
+    t.string   "crypted_password",          :limit => 40
+    t.string   "salt",                      :limit => 40
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "remember_token",            :limit => 40
+    t.datetime "remember_token_expires_at"
+    t.boolean  "mobile_pin_accepted",                      :default => false, :null => false
+    t.string   "mobile_pin"
+  end
+
+  add_index "users", ["login"], :name => "index_users_on_login", :unique => true
 
   create_table "zones", :force => true do |t|
     t.string   "name"

@@ -1,4 +1,17 @@
 class AreasController < ApplicationController
+  STATUS_EMAILS_DEV = {
+    "Western Coastal" => ['notice_all_dev@arctic-transportation.org', 'notice_westcoastal_dev@arctic-transportation.org'],
+    "Eastern Coastal" => ['notice_all_dev@arctic-transportation.org', 'notice_eastcoastal_dev@arctic-transportation.org'],
+    "Lower Foothills" => ['notice_all_dev@arctic-transportation.org', 'notice_lowerfoot_dev@arctic-transportation.org'],
+    "Upper Foothills" => ['notice_all_dev@arctic-transportation.org', 'notice_upperfoot_dev@arctic-transportation.org']
+  }
+  STATUS_EMAILS = {
+    "Western Coastal" => ['notice_all@arctic-transportation.org', 'notice_westcoastal@arctic-transportation.org'],
+    "Eastern Coastal" => ['notice_all@arctic-transportation.org', 'notice_eastcoastal@arctic-transportation.org'],
+    "Lower Foothills" => ['notice_all@arctic-transportation.org', 'notice_lowerfoot@arctic-transportation.org'],
+    "Upper Foothills" => ['notice_all@arctic-transportation.org', 'notice_upperfoot@arctic-transportation.org']
+  }
+  
   def index
     if params.include? :node and params[:node] != 'root'
       @areas = []
@@ -31,6 +44,9 @@ class AreasController < ApplicationController
 
   def update
     @area = Area.find(params[:id])
+    current_travel_status = @area.travel_status
+    alert_ids = @area.alerts.collect(&:id)
+    op_ids = @area.operationals.collect(&:id)
 
     area_params = params[:area]
     messages = area_params.delete :messages
@@ -51,6 +67,19 @@ class AreasController < ApplicationController
         :errors => @area.errors,
         :flash => "Error Updating Area Information"
       }
+    end
+
+#    if Rails.production?
+#      emails = STATUS_EMAILS[@area.name]
+#    else
+      emails = STATUS_EMAILS_DEV[@area.name]
+#    end
+
+    if(@area.travel_status != current_travel_status)
+      AreaMailer.delay.status_update(emails, @area)
+    end
+    if(@area.alerts.collect(&:id) != alert_ids)
+      AreaMailer.delay.alert_updates(emails, @area)
     end
 
     #FIXME: Do this dynamically
@@ -75,13 +104,12 @@ class AreasController < ApplicationController
     size ||= :medium
     outfile = "public/images/overview_#{size.to_s}#{determine_extension(imgtype)}"
     width,height = determine_size(size)
-    layers = "landsat_pan,zones,roads"
+    layers = "landsat_pan,zones,roads,labels"
     #layers += Area.all.collect { |a| a.name.underscore.gsub(' ', '_') }.join(',')
 
     img_template = "http://atn.proto.gina.alaska.edu/atn?VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:3338&BBOX=-93449.8805055504,2003772.41212257,389482.569861798,2337148.0788739&WIDTH=#{width}&HEIGHT=#{height}&LAYERS=#{layers}&STYLES=&EXCEPTIONS=application/vnd.ogc.se_xml&FORMAT=#{imgtype}&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE"
 
-    RAILS_DEFAULT_LOGGER.info img_template
-    RAILS_DEFAULT_LOGGER.info `wget '#{img_template}' -O '#{outfile}'` unless File.exists? outfile
+    ::Rails.logger.info `wget '#{img_template}' -O '#{outfile}'` unless File.exists? outfile
   
     outfile
   end

@@ -12,7 +12,12 @@
 <div id="container">
   <div id="header"><%= render 'layouts/header' %></div>
   <div id="footer"><%= render 'layouts/footer' %></div>
-  <div id="content"><%= yield %></div>
+  <div id="content">
+    <div class="flash">
+      <%= raw flash_messages -%>
+    </div>
+    <%= yield %>
+  </div>
 </div>
 </body>
 </html>

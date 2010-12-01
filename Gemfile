@@ -1,6 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.1'
+gem 'rails', '3.0.3'
+
+gem 'ruby-openid'
+gem 'rack-openid', '>=0.2.1', :require => 'rack/openid'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -10,6 +13,7 @@ gem 'pg'
 gem 'spatial_adapter'
 
 gem "compass", ">= 0.10.6"
+gem 'delayed_job', ">= 2.1.1"
 
 # Use unicorn as the web server
 # gem 'unicorn'

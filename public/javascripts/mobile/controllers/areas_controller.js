@@ -7,6 +7,7 @@ Ext.regController('areas', {
       });
       ATN.viewport.setActiveItem(this.areas.itemId);
     }
+    ATN.viewport.setActiveItem(this.areas.itemId);
     this.areas.setActiveItem('list', { type: 'slide', reverse: params.back });
   },
 
@@ -66,7 +67,7 @@ Ext.regController('areas', {
     }
 
     Ext.Ajax.request({
-      url: '/areas/' + values.id,
+      url: '/areas/' + values.id + '.json',
       method: 'PUT',
       params: area,
       success: function(response, options) {

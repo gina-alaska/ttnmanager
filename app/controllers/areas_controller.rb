@@ -1,4 +1,6 @@
 class AreasController < ApplicationController
+  before_filter :login_required, :only => [:update]
+
   STATUS_EMAILS_DEV = {
     "Western Coastal" => ['notice_all_dev@arctic-transportation.org', 'notice_westcoastal_dev@arctic-transportation.org'],
     "Eastern Coastal" => ['notice_all_dev@arctic-transportation.org', 'notice_eastcoastal_dev@arctic-transportation.org'],

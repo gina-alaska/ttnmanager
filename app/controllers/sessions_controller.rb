@@ -1,5 +1,11 @@
 # This controller handles the login/logout function of the site.  
 class SessionsController < ApplicationController
+  def index
+    respond_to do |format|
+      format.json { render :json => { :success => logged_in? } }
+    end
+  end
+
   # render new.rhtml
   def new
   end
@@ -103,16 +109,24 @@ class SessionsController < ApplicationController
       # protection if user resubmits an earlier form using back
       # button. Uncomment if you understand the tradeoffs.
       # reset_session
-      successful_login(user)
+      successful_login(user, true)
+      redirect_to('/m', :notice => "Logged in successfully")
     else
       note_failed_signin
-      redirect_back_or_default('/m', :notice => "Unable to authenticate using pin")
+      redirect_to('/m', :notice => "Unable to authenticate using pin")
     end
   end
 
   def destroy
     logout_killing_session!
-    redirect_back_or_default('/', :notice => "You have been logged out.")
+    respond_to do |format|
+      format.html {
+        redirect_back_or_default('/', :notice => "You have been logged out.")
+      }
+      format.json {
+        redirect_to('/m', :notice => "You have been logged out.")
+      }
+    end
   end
 
 protected

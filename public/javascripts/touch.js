@@ -12,7 +12,7 @@ new Ext.Application({
       model: 'Area'
     });
     Ext.getStore('areas').read();
-    
+
     Ext.regStore('areasRemote', {
       proxy: {
         type: 'ajax',
@@ -29,7 +29,7 @@ new Ext.Application({
               index = areas.find('id', r.get('id'));
               local = areas.getAt(index);
 
-              if(index < 0) { 
+              if(index < 0) {
                 areas.add(r);
                 local = r;
               }
@@ -37,7 +37,7 @@ new Ext.Application({
                 r.set(local.data);
                 r.save();
               } else if(local.get('updated_at') < r.get('updated_at')) {
-                local.set(r.data); 
+                local.set(r.data);
               }
             }, this);
             areas.save();
@@ -61,12 +61,21 @@ new Ext.Application({
       layout: 'card'
     });
 
-    new Ext.LoadMask(this.viewport.getEl(), { 
-      msg: 'Syncing...', 
-      store: Ext.getStore('areasRemote') 
-    });   
+    new Ext.LoadMask(ATN.viewport.getEl(), {
+      msg: 'Syncing...',
+      store: Ext.getStore('areasRemote')
+    });
+
     Ext.getStore('areasRemote').load();
- },
+
+    if(flash.error) {
+      Ext.Msg.alert('Error', flash.error);
+    } else if (flash.notice) {
+      Ext.Msg.alert('Notice', flash.notice);
+    } else if (flash.message) {
+      Ext.Msg.alert('Message', flash.message);
+    }    
+  },
 
   profiles: {
     'tablet': function() {
@@ -82,6 +91,9 @@ new Ext.Application({
 });
 
 Ext.Router.draw(function(map) {
+  map.connect('login', { controller: 'session', action: 'new' })
+  map.connect('logout', { controller: 'session', action: 'destroy' })
+
   map.connect(':controller', { action: 'index' });
   map.connect(':controller/:action/:id');
   /* This goes last, default route */

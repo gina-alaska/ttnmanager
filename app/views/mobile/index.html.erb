@@ -1,3 +1,4 @@
 <script type="text/javascript">
-  
+  var flash = <%= raw flash_messages_json -%>;
+  var current_user = <%= raw current_user.to_json({ :only => [:name] }) -%>;
 </script>

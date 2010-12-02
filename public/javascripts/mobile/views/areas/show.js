@@ -10,17 +10,14 @@ ATN.views.areas.Show = Ext.extend(Ext.Panel, {
         scope: this,
         handler: function() {
           this.actions.hide();
-          top.location.hash = 'areas/edit/' + this.area.get('id');
+          ATN.dispatch({
+            controller: 'areas',
+            action: 'edit',
+            id: this.area.get('id'),
+            historyUrl: 'areas/edit/' + this.area.get('id')
+          });
         }
       }, {
-        xtype: 'button',
-        text: 'Send Email',
-        scope: this,
-        handler: function() {
-          this.actions.hide();
-          Ext.Msg.alert('Warning', 'Not Implemented Yet');
-        }
-      },{
         text: 'Cancel',
         ui: 'decline',
         scope: this,

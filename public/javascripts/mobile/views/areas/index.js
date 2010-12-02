@@ -4,28 +4,51 @@ ATN.views.areas.Index = Ext.extend(Ext.Panel, {
   initComponent: function() {
     this.actions = new Ext.ActionSheet({
       hideOnMaskTap: true,
-      items: [{
+      items: []
+    });
+
+    if(current_user == null) {
+      this.actions.add({
         text: 'Login',
         scope: this,
         handler: function() {
           this.actions.hide();
-          Ext.Msg.alert('Warning', 'Not Implemented Yet')
+          ATN.dispatch({
+            controller: 'sessions',
+            action: 'new',
+            historyUrl: 'login'
+          });
         }
-      }, {
-        text: 'Refresh Area Status',
+      });
+    } else {
+      this.actions.add({
+        text: 'Logout',
         scope: this,
         handler: function() {
           this.actions.hide();
-          Ext.getStore('areasRemote').load();
+          ATN.dispatch({
+            controller: 'sessions',
+            action: 'destroy',
+            historyUrl: 'logout'
+          });
         }
-      }, {
-        text: 'Cancel',
-        scope: this,
-        ui: 'decline',
-        handler: function() {
-          this.actions.hide();
-        }
-      }]
+      });
+    }
+
+    this.actions.add({
+      text: 'Refresh Area Status',
+      scope: this,
+      handler: function() {
+        this.actions.hide();
+        Ext.getStore('areasRemote').load();
+      }
+    }, {
+      text: 'Cancel',
+      scope: this,
+      ui: 'decline',
+      handler: function() {
+        this.actions.hide();
+      }
     });
 
     this.list = new Ext.List({

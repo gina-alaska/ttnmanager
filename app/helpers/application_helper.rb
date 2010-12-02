@@ -11,6 +11,18 @@ module ApplicationHelper
     formatted_messages.join
   end
 
+  def flash_messages_json
+    keys = flash.keys.select{|k| FLASH_NOTICE_KEYS.include?(k)}
+    return {}.to_json if keys.empty?
+
+    messages = keys.inject({}) do |m, type|
+      m[type] = flash[type]
+      m
+    end
+
+    messages.to_json
+  end
+
   def message_for_item(message, item = nil)
     if item.is_a?(Array)
       message % link_to(*item)

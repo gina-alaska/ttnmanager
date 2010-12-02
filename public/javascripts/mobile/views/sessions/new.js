@@ -1,7 +1,9 @@
 ATN.views.login = Ext.extend(Ext.form.FormPanel, {
   initComponent: function() {
     Ext.apply(this, {
-      url: '/login',
+      url: '/session',
+      method: 'POST',
+      standardSubmit: true,
       items: [{
         xtype: 'fieldset',
         title: 'Enter your Login PIN below',
@@ -14,8 +16,22 @@ ATN.views.login = Ext.extend(Ext.form.FormPanel, {
         xtype: 'button',
         text: 'Submit',
         ui: 'action',
+        cls: 'button-spacer',
+        scope: this,
         handler: function() {
-          ATN.controller.fireEvent('login');
+          this.submit({ url: '/session', method: 'POST' });
+        }
+      },{
+        xtype: 'button',
+        text: 'Cancel',
+        ui: 'drastic',
+        scope: this,
+        handler: function() {
+          ATN.dispatch({
+            controller: 'areas',
+            action: 'index',
+            historyUrl: 'areas'
+          });
         }
       }]
     });
@@ -23,4 +39,4 @@ ATN.views.login = Ext.extend(Ext.form.FormPanel, {
     ATN.views.login.superclass.initComponent.call(this);
   }
 });
-Ext.reg('atnLogin', ATN.views.login);
+Ext.reg('session_new', ATN.views.login);

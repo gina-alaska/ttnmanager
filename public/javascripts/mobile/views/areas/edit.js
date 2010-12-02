@@ -5,7 +5,7 @@ ATN.views.areas.edit = Ext.extend(Ext.form.FormPanel, {
     messages.each(function(m) {
       msgs.push({
         itemId: 'message_' + m.get('id'),
-        xtype: 'radio',
+        xtype: 'radiofield',
         label: m.get('mobile_text'),
         name: 'messages['+ name +']',
         cls: 'message',
@@ -21,7 +21,7 @@ ATN.views.areas.edit = Ext.extend(Ext.form.FormPanel, {
     messages.each(function(m) {
       msgs.push({
         itemId: 'message_' + m.get('id'),
-        xtype: 'checkbox',
+        xtype: 'checkboxfield',
         label: m.get('mobile_text'),
         name: 'messages['+ m.get('id') +']',
         cls: 'message',
@@ -104,14 +104,14 @@ ATN.views.areas.edit = Ext.extend(Ext.form.FormPanel, {
         }]
       }],
       items: [{
-        xtype: 'hidden',
+        xtype: 'hiddenfield',
         name: 'id'
       },{
         itemId: 'status',
         title: 'Area name here',
         xtype: 'fieldset',
         items: [{
-          xtype: 'select',
+          xtype: 'selectfield',
           name: 'travel_status',
           label: 'Travel',
           options: [
@@ -120,7 +120,7 @@ ATN.views.areas.edit = Ext.extend(Ext.form.FormPanel, {
             { text: 'Closed', value: 'Closed' }
           ]
         }, {
-          xtype: 'textarea',
+          xtype: 'textareafield',
           name: 'notes',
           label: 'Notes'
         }]

@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessor :mobile_pin_request
   
-  attr_accessible :login, :email, :name, :mobile_pin, :mobile_pin_request
+  attr_accessible :login, :email, :name, :mobile_pin_request
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   # uff.  this is really an authorization, not authentication routine.
   # We really need a Dispatch Chain here or something.

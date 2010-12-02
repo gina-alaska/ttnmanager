@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#rev<%= Time.now.to_i %>
+#rev<%= File.read('REVISION') if File.exists? 'REVISION' %>
 
 <%= stylesheet_path("/sencha/resources/css/atn.css") %>
 

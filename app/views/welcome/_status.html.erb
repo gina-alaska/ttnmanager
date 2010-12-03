@@ -14,7 +14,7 @@
   <div>
     <label>Alerts:</label>
     <div class="messages">
-      <%= area.alerts.collect(&:full_text).join('<br />') %>
+      <%= raw area.alerts.collect(&:full_text).join('<br />') %>
     </div>
   </div>
   <% end -%>
@@ -22,9 +22,7 @@
   <div>
     <label>Operational Considerations:</label>
     <div class="messages">
-      <% area.operationals.collect(&:full_text).each do |t| -%>
-      <%= h t %><br />
-      <% end -%>
+      <%= raw area.operationals.collect(&:full_text).join('<br />') %>
     </div>
   </div>
   <% end -%>

@@ -56,13 +56,44 @@ class AreasController < ApplicationController
       c << i[1] unless i[1].empty? or i[1].nil?
       c
     }
+    @area.attributes = area_params
 
-    if @area.update_attributes(area_params)
+    changed = false
+    if @area.changed?
+      changed = true
+    end
+
+    if @area.save 
       response = {
         :success => true,
         :area => @area,
         :flash => "Updated #{@area.name} Information"
       }
+
+      if Rails.env.production?
+        emails = STATUS_EMAILS[@area.name]
+      else
+        emails = STATUS_EMAILS_DEV[@area.name]
+      end
+      AreaMailer.delay.current_status(emails, @area) if changed      
+#      if(@area.travel_status != current_travel_status)
+#        AreaMailer.delay.status_update(emails, @area)
+#      end
+#      if(@area.alerts.collect(&:id) != alert_ids)
+#        AreaMailer.delay.alert_updates(emails, @area)
+#      end
+
+      #FIXME: Do this dynamically
+      FileUtils.rm('public/images/overview.png') if File.exists? 'public/images/overview.png'
+      FileUtils.rm('public/images/overview_small.png') if File.exists? 'public/images/overview_small.png'
+      FileUtils.rm('public/images/overview_medium.png') if File.exists? 'public/images/overview_medium.png'
+      FileUtils.rm('public/images/overview_large.png') if File.exists? 'public/images/overview_large.png'
+      FileUtils.rm('public/images/overview_preview.png') if File.exists? 'public/images/overview_preview.png'
+      FileUtils.rm('public/images/overview.jpg') if File.exists? 'public/images/overview.jpg'
+      FileUtils.rm('public/images/overview_small.jpg') if File.exists? 'public/images/overview_small.jpg'
+      FileUtils.rm('public/images/overview_medium.jpg') if File.exists? 'public/images/overview_medium.jpg'
+      FileUtils.rm('public/images/overview_large.jpg') if File.exists? 'public/images/overview_large.jpg'
+      FileUtils.rm('public/images/overview_preview.jpg') if File.exists? 'public/images/overview_preview.jpg'
     else
       response = {
         :success => false,
@@ -70,31 +101,6 @@ class AreasController < ApplicationController
         :flash => "Error Updating Area Information"
       }
     end
-
-#    if Rails.production?
-#      emails = STATUS_EMAILS[@area.name]
-#    else
-      emails = STATUS_EMAILS_DEV[@area.name]
-#    end
-
-    if(@area.travel_status != current_travel_status)
-      AreaMailer.delay.status_update(emails, @area)
-    end
-    if(@area.alerts.collect(&:id) != alert_ids)
-      AreaMailer.delay.alert_updates(emails, @area)
-    end
-
-    #FIXME: Do this dynamically
-    FileUtils.rm('public/images/overview.png') if File.exists? 'public/images/overview.png'
-    FileUtils.rm('public/images/overview_small.png') if File.exists? 'public/images/overview_small.png'
-    FileUtils.rm('public/images/overview_medium.png') if File.exists? 'public/images/overview_medium.png'
-    FileUtils.rm('public/images/overview_large.png') if File.exists? 'public/images/overview_large.png'
-    FileUtils.rm('public/images/overview_preview.png') if File.exists? 'public/images/overview_preview.png'
-    FileUtils.rm('public/images/overview.jpg') if File.exists? 'public/images/overview.jpg'
-    FileUtils.rm('public/images/overview_small.jpg') if File.exists? 'public/images/overview_small.jpg'
-    FileUtils.rm('public/images/overview_medium.jpg') if File.exists? 'public/images/overview_medium.jpg'
-    FileUtils.rm('public/images/overview_large.jpg') if File.exists? 'public/images/overview_large.jpg'
-    FileUtils.rm('public/images/overview_preview.jpg') if File.exists? 'public/images/overview_preview.jpg'
 
     respond_to do |format|
       format.json { render :json => response.to_json(:methods => [:alerts, :operationals, :soil, :snow], :except => [:geom]) }

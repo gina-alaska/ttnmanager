@@ -10,4 +10,9 @@ class AreaMailer < ActionMailer::Base
     @area = area
     mail(:to => to, :subject => "North Slope Off-road Alerts Update")
   end
+
+  def current_status(to, area)
+    @area = area
+    mail(:to => to, :subject => "North Slope Off-road Update for the #{@area.name} area")
+  end
 end

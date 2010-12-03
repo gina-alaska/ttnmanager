@@ -83,7 +83,7 @@ Ext.regController('areas', {
         if(json.flash) {
           Ext.Msg.alert(json.success ? 'Success' : 'Error', json.flash);
         } else {
-          Ext.Msg.alert(json.success ? 'Success' : 'Error', 'Save finished');
+          Ext.Msg.alert(json.success ? 'Success' : 'Error', 'Save Finished');
         }
         if(json.success && record) {
           record.set(json.area);

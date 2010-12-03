@@ -733,14 +733,18 @@ body.atn .overview_img {
 * html body.atn .overview_img {
   overflow-x: hidden;
 }
-/* line 133, ../../app/stylesheets/screen.scss */
+/* line 131, ../../app/stylesheets/screen.scss */
+body.atn .overview_img .notes {
+  font-size: 1.2em;
+}
+/* line 137, ../../app/stylesheets/screen.scss */
 body.atn .status-grid .container {
   width: 950px;
   margin: 0 auto;
   overflow: hidden;
   *zoom: 1;
 }
-/* line 137, ../../app/stylesheets/screen.scss */
+/* line 141, ../../app/stylesheets/screen.scss */
 body.atn .status-grid .column1 {
   display: inline;
   float: left;
@@ -751,7 +755,7 @@ body.atn .status-grid .column1 {
 * html body.atn .status-grid .column1 {
   overflow-x: hidden;
 }
-/* line 140, ../../app/stylesheets/screen.scss */
+/* line 144, ../../app/stylesheets/screen.scss */
 body.atn .status-grid .column2 {
   display: inline;
   float: left;
@@ -762,24 +766,24 @@ body.atn .status-grid .column2 {
 * html body.atn .status-grid .column2 {
   overflow-x: hidden;
 }
-/* line 144, ../../app/stylesheets/screen.scss */
+/* line 148, ../../app/stylesheets/screen.scss */
 body.atn .status-grid td {
   text-align: center;
   padding: 1em;
 }
-/* line 149, ../../app/stylesheets/screen.scss */
+/* line 153, ../../app/stylesheets/screen.scss */
 body.atn .status-grid .Open {
   color: green;
 }
-/* line 153, ../../app/stylesheets/screen.scss */
+/* line 157, ../../app/stylesheets/screen.scss */
 body.atn .status-grid .Closed {
   color: red;
 }
-/* line 157, ../../app/stylesheets/screen.scss */
+/* line 161, ../../app/stylesheets/screen.scss */
 body.atn .status-grid .area {
   padding: 2em;
 }
-/* line 160, ../../app/stylesheets/screen.scss */
+/* line 164, ../../app/stylesheets/screen.scss */
 body.atn .status-grid .area h3 {
   text-align: center;
   font-size: 1.5em;
@@ -787,20 +791,20 @@ body.atn .status-grid .area h3 {
   text-decoration: underline;
   margin-bottom: 0.3em;
 }
-/* line 167, ../../app/stylesheets/screen.scss */
+/* line 171, ../../app/stylesheets/screen.scss */
 body.atn .status-grid .area h4 {
   text-align: center;
   margin-bottom: 0.3em;
 }
-/* line 172, ../../app/stylesheets/screen.scss */
+/* line 176, ../../app/stylesheets/screen.scss */
 body.atn .status-grid .area label {
   text-decoration: underline;
 }
-/* line 176, ../../app/stylesheets/screen.scss */
+/* line 180, ../../app/stylesheets/screen.scss */
 body.atn .status-grid .area .messages {
   margin-left: 1em;
 }
-/* line 182, ../../app/stylesheets/screen.scss */
+/* line 186, ../../app/stylesheets/screen.scss */
 body.atn h1 {
   font-size: 3em;
   text-align: center;

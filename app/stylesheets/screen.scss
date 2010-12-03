@@ -127,6 +127,10 @@ body.atn {
 
   .overview_img {
     @include column(24);
+
+    .notes {
+      font-size: 1.2em;
+    }
   }
 
   .status-grid {

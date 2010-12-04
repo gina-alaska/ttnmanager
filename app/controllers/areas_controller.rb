@@ -46,6 +46,8 @@ class AreasController < ApplicationController
 
   def update
     @area = Area.find(params[:id])
+
+    old_message_ids = @area.message_ids
     current_travel_status = @area.travel_status
     alert_ids = @area.alerts.collect(&:id)
     op_ids = @area.operationals.collect(&:id)
@@ -56,14 +58,23 @@ class AreasController < ApplicationController
       c << i[1] unless i[1].empty? or i[1].nil?
       c
     }
+
+
+
     @area.attributes = area_params
 
     changed = false
     if @area.changed?
       changed = true
+      success = @area.save
+    elsif old_message_ids != area_params[:message_ids]
+      changed = true
+      #This is so we can update the timestamp with the messages for the area have changed but the status stays the same
+      @area.touch
+      success = true
     end
 
-    if @area.save 
+    if success
       response = {
         :success => true,
         :area => @area,

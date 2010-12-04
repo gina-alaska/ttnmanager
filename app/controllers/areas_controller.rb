@@ -59,22 +59,18 @@ class AreasController < ApplicationController
       c
     }
 
-
-
     @area.attributes = area_params
 
     changed = false
     if @area.changed?
       changed = true
-      success = @area.save
     elsif old_message_ids != area_params[:message_ids]
       changed = true
       #This is so we can update the timestamp with the messages for the area have changed but the status stays the same
       @area.touch
-      success = true
     end
 
-    if success
+    if @area.save
       response = {
         :success => true,
         :area => @area,

@@ -39,7 +39,7 @@ ATN.views.areas.edit = Ext.extend(Ext.form.FormPanel, {
     messages.filter('group', 'soil');
     this.soil_status = {
       itemId: 'soil',
-      title: 'Soil Status',
+      title: 'Soil Temperature',
       xtype: 'fieldset',
       items: this.buildRadioButtons('soil', messages)
     };

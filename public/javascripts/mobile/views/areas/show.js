@@ -62,7 +62,7 @@ ATN.views.areas.Show = Ext.extend(Ext.Panel, {
             '<div><label>Notes:</label> <span class="notes">{notes}</span></div>' +
           '</tpl>' +
           '<tpl if="soil.length">' +
-            '<h2>Soil Status:</h2>' +
+            '<h2>Soil Temperature:</h2>' +
             '<tpl for="soil">' +
               '<div class="message soil">' +
                 '{full_text}' +

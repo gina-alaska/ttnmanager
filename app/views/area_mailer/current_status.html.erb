@@ -6,7 +6,7 @@
   <body class="status-grid">
     <div class="area">
       <h3><%= h @area.name -%></h3>
-      <div>Updated: <%= time_ago_in_words @area.updated_at -%> ago</div>
+      <div>Updated: <%= @area.updated_at -%></div>
       
       <p>
         View online at<br /> <span style="margin-left: 1em;"><%= link_to 'http://www.arctic-transportation.org/map-xml.php', 'http://www.arctic-transportation.org/map-xml.php' -%></span>

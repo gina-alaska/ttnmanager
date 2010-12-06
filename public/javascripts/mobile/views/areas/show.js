@@ -8,6 +8,7 @@ ATN.views.areas.Show = Ext.extend(Ext.Panel, {
         xtype: 'button',
         text: 'Edit Travel Status',
         scope: this,
+        hidden: (current_user == null),
         handler: function() {
           this.actions.hide();
           ATN.dispatch({

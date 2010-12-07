@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101201003807) do
+ActiveRecord::Schema.define(:version => 20101207001104) do
 
   create_table "alerts", :force => true do |t|
     t.integer  "area_id"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20101201003807) do
     t.datetime      "updated_at"
     t.multi_polygon "geom",          :limit => nil, :srid => 9102634
     t.text          "notes"
+    t.integer       "order"
   end
 
   add_index "areas", ["geom"], :name => "index_areas_on_geom", :spatial => true

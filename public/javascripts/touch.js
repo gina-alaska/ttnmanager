@@ -3,6 +3,7 @@ new Ext.Application({
   defaultUrl: 'areas',
   launch: function() {
     Ext.regStore('areas', {
+      sorters: 'order',
       proxy: {
         id: 'areas',
         type: 'localstorage',

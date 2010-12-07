@@ -7,7 +7,6 @@
 // Import all the default blueprint modules so that we can access their mixins.
 @import "blueprint";
 
-$form_error_color: #ff0000;
 
 body.bp {
   @include blueprint-typography(true);

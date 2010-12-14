@@ -47,11 +47,18 @@ ATN.views.areas.Show = Ext.extend(Ext.Panel, {
             });
           }
         }, { xtype: 'spacer' }, {
-          scope: this,
-          text: 'Actions',
           hidden: (current_user == null),
+          xtype: 'button',
+          text: 'Edit',
+          scope: this,
           handler: function() {
-            this.actions.show();
+            this.actions.hide();
+            ATN.dispatch({
+              controller: 'areas',
+              action: 'edit',
+              id: this.area.get('id'),
+              historyUrl: 'areas/edit/' + this.area.get('id')
+            });
           }
         }]
       }],

@@ -1,7 +1,10 @@
 new Ext.Application({
   name: 'ATN',
+  useLoadMask: true,
   defaultUrl: 'areas',
   launch: function() {
+    Ext.Viewport.init();
+
     Ext.regStore('areas', {
       sorters: 'order',
       proxy: {
@@ -75,7 +78,9 @@ new Ext.Application({
       Ext.Msg.alert('Notice', flash.notice);
     } else if (flash.message) {
       Ext.Msg.alert('Message', flash.message);
-    }    
+    }
+
+    Ext.Viewport.onOrientationChange();
   },
 
   profiles: {

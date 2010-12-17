@@ -97,8 +97,8 @@ new Ext.Application({
 });
 
 Ext.Router.draw(function(map) {
-  map.connect('login', { controller: 'session', action: 'new' })
-  map.connect('logout', { controller: 'session', action: 'destroy' })
+  map.connect('login', { controller: 'sessions', action: 'new' })
+  map.connect('logout', { controller: 'sessions', action: 'destroy' })
 
   map.connect(':controller', { action: 'index' });
   map.connect(':controller/:action/:id');

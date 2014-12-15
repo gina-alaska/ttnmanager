@@ -1,0 +1,21 @@
+.col-md-6.col-xs-6.area
+  %h3= area.name
+  %h4= "Updated: #{time_ago_in_words area.updated_at}"
+  %div
+    %label Travel Status
+    %span{class: area.travel_status}= area.travel_status
+  %div
+    %label Soil Temperature
+    %span= area.messages.soil.first.try(:full_text)
+  %div
+    %label Snow Status
+    %span= area.messages.snow.first.try(:full_text)
+
+  - unless area.messages.alert.empty?
+    %label Alerts
+    .messages
+      = render partial: 'alerts', collection: area.messages.alert
+  - unless area.messages.operational.empty?
+    %label Operational Considerations
+    .messages
+      = render partial: 'alerts', collection: areas.messages.operational

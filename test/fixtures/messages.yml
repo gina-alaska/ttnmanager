@@ -1,9 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+alert:
   mobile_text: MyString
   full_text: MyString
+  group: alert
 
-two:
+operational:
   mobile_text: MyString
   full_text: MyString
+  group: operational
+
+snow:
+  mobile_text: snow
+  full_text: snow
+  group: snow
+
+soil:
+  mobile_text: soil
+  full_text: soil
+  group: soil

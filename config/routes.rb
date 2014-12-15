@@ -1,13 +1,12 @@
 Rails.application.routes.draw do
   resources :messages
-  resources :alerts
   resources :areas do
     collection do
       get :overview
     end
   end
 
-  match 'docs' => 'doc#index'
+  get '/docs', to: 'doc#index'
   root :to => 'welcome#index'
 
   get '/logout', to: 'sessions#destroy'

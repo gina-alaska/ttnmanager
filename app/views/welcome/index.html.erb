@@ -1,0 +1,10 @@
+<div class="overview_img" style="text-align:center;">
+  <%= link_to image_tag("#{areas_path}/overview.png?size=preview",  :alt=>"Tundra Area Travel Status"), "#{areas_path}/overview.png?size=large", :target => '_blank' -%>
+  <div class="notes">Note:  Information presented here applies only to lands owned by the State of Alaska.</div>
+</div>
+<div class="status-grid">
+  <div class="column1"><%= render :partial => 'status', :locals => { :area => Area.find_by_name('Western Coastal', :include => :messages) } %></div>
+  <div class="column2"><%= render :partial => 'status', :locals => { :area => Area.find_by_name('Eastern Coastal', :include => :messages) } %></div>
+  <div class="column1"><%= render :partial => 'status', :locals => { :area => Area.find_by_name('Lower Foothills', :include => :messages) } %></div>
+  <div class="column2"><%= render :partial => 'status', :locals => { :area => Area.find_by_name('Upper Foothills', :include => :messages) } %></div>
+</div>

@@ -1,0 +1,190 @@
+// This import applies a global reset to any page that imports this stylesheet.
+@import "blueprint/reset";
+
+// To configure blueprint, edit the partials/base.sass file.
+@import "partials/base";
+
+// Import all the default blueprint modules so that we can access their mixins.
+@import "blueprint";
+
+
+body.bp {
+  @include blueprint-typography(true);
+  @include blueprint-utilities;
+  @include blueprint-debug;
+  @include blueprint-interaction;
+}
+
+form.bp {
+  @include blueprint-form;
+}
+
+// Page layout can be done using mixins applied to your semantic classes and IDs:
+body.atn {
+  #container {
+    @include container;
+  }
+  #header, #footer {
+    @include column(24);
+  }
+  #content {
+    // true means it's the last column in the row
+    @include column(24, true);
+  }
+
+  #footer {
+    text-align: center;
+
+    li {
+      display: inline;
+    }
+    a {
+      padding: 1em;
+      font-size: 1.2em;
+    }
+    ul {
+      padding: 0;
+    }
+  }
+  
+  .error_explanation {
+    border: lighten($error_color, 50%) solid 1px;
+    padding: 0;
+    width: 100%;
+    margin-bottom: 1em;
+
+    h2 {
+      font-size: 1.2em !important;
+      background: lighten($error_color, 60%);
+      margin-bottom: 0.2em;
+      color: $error_color;
+    }
+
+    ul {
+      margin: 0;
+    }
+  }
+
+  div.field_with_errors {
+    display: inline;
+  }
+
+  .field_with_errors {
+    padding: 0 !important;
+
+    input[type=text] {
+      border: lighten($error_color, 50%) solid 1px !important;
+    }
+  }
+
+  .userform {
+    font-size: 1.2em;
+    @include container;
+    form {
+      @include blueprint-form;
+      @include column(14);
+
+      input[type=text] {
+        width: 100%;
+      }
+
+      input[readonly] {
+        background: #eee;
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .note {
+      @include column(9, true);
+      @include prepend(1);
+    }
+  }
+
+  .loginform {
+    font-size: 1.2em;
+    @include container;
+
+    h2 {
+      text-align: center;
+      text-decoration: underline;
+      margin-bottom: 0px !important;
+    }
+
+    form {
+      @include column(10);
+      @include prepend(7);
+      @include blueprint-form;
+      
+      input[type=text] {
+        width: 100%;
+      }
+    }
+  }
+
+  .overview_img {
+    @include column(24);
+
+    .notes {
+      font-size: 1.2em;
+    }
+  }
+
+  .status-grid {
+    .container {
+      @include container;
+    }
+
+    .column1 {
+      @include column(12);
+    }
+    .column2 {
+      @include column(12, true);
+    }
+
+    td {
+      text-align: center;
+      padding: 1em;
+    }
+
+    .Open {
+      color: green;
+    }
+
+    .Closed {
+      color: red;
+    }
+
+    .area {
+      padding: 2em;
+
+      h3 {
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        text-decoration: underline;
+        margin-bottom: 0.3em;
+      }
+      h4 {
+        text-align: center;
+        margin-bottom: 0.3em;
+      }
+
+      label {
+        text-decoration: underline;
+      }
+
+      .messages {
+        margin-left: 1em;
+      }
+    }
+  }
+
+  h1 {
+    font-size: 3em;
+    text-align: center;
+    font-weight: bold;
+  }
+}

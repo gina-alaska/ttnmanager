@@ -1,0 +1,29 @@
+<div class="area">
+  <h3><%= h area.name -%></h3>
+  <h4>Updated: <%= time_ago_in_words area.updated_at -%> ago</h4>
+  <div>
+    <label>Travel Status:</label> <span class="<%= area.travel_status -%>"><%= h area.travel_status %></span>
+  </div>
+  <div>
+    <label>Soil Temperature:</label> <span><%= h area.soil.first.full_text %></span>
+  </div>
+  <div>
+    <label>Snow Status:</label> <span><%= h area.snow.first.full_text %></span>
+  </div>
+  <% unless area.alerts.empty? -%>
+  <div>
+    <label>Alerts:</label>
+    <div class="messages">
+      <%= raw area.alerts.collect(&:full_text).join('<br />') %>
+    </div>
+  </div>
+  <% end -%>
+  <% unless area.operationals.empty? -%>
+  <div>
+    <label>Operational Considerations:</label>
+    <div class="messages">
+      <%= raw area.operationals.collect(&:full_text).join('<br />') %>
+    </div>
+  </div>
+  <% end -%>
+</div>

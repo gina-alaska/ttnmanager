@@ -1,0 +1,177 @@
+ATN.area_status = new Ext.Panel({
+  scroll: 'vertical',
+  dockedItems: [{
+    itemId: 'area-toolbar',
+    dock: 'top',
+    title: 'Area Status',
+    xtype: 'toolbar',
+    defaults: { ui: 'plain', iconMask: true },
+    items: [{
+      iconCls: 'arrow_left',
+      handler: function() {
+        ATN.controller.fireEvent('back_area');
+      }
+    }, { xtype: 'spacer' }, {
+      iconCls: 'compose',
+      handler: function() {
+        ATN.controller.fireEvent('edit_area');
+      }
+    }]
+  }],
+  tpl: new Ext.XTemplate(
+    '<tpl for=".">' +
+    '<div class="area_status">' +
+      '<div><label>Travel Status: </label><span class="status-{travel_status}">{travel_status}</span></div>' +
+      '<tpl if="notes.length">' +
+        '<div><label>Notes: </label><span class="notes">{notes}</span></div>' +
+      '</tpl>' +
+      '<tpl if="soil.length">' +
+        '<h2>Soil Status:</h2>' +
+        '<tpl for="soil">' +
+          '<div class="message soil">' +
+            '{full_text}' +
+          '</div>' +
+        '</tpl>' +
+      '</tpl>' +
+      '<tpl if="snow.length">' +
+        '<h2>Snow Status:</h2>' +
+        '<tpl for="snow">' +
+          '<div class="message snow">' +
+            '{full_text}' +
+          '</div>' +
+        '</tpl>' +
+      '</tpl>' +
+      '<tpl if="operationals.length">' +
+        '<h2>Operational Considerations:</h2>' +
+        '<tpl for="operationals">' +
+          '<div class="message operational">' +
+            '{full_text}' +
+          '</div>' +
+        '</tpl>' +
+      '</tpl>' +
+      '<tpl if="alerts.length">' +
+        '<h2>Alerts:</h2>' +
+        '<tpl for="alerts">' +
+          '<div class="message alert">' +
+            '{full_text}' +
+          '</div>' +
+        '</tpl>' +
+      '</tpl>' +
+    '</div>' +
+    '</tpl>',
+    { compiled: true }
+  ),
+  bodyStyle: 'padding: 0.5em;',
+  items: [{
+    itemId: 'status-text'
+  }, {
+    xtype: 'button',
+    text: 'Send Email Update',
+    handler: function() {
+      ATN.controller.fireEvent('email_area');
+    }
+  }],
+  load: function(area) {
+    this.getComponent('area-toolbar').setTitle(area.get('name'));
+    this.getComponent('status-text').update(this.tpl.apply(area.data));
+  }
+});
+
+ATN.area_form = new Ext.form.FormPanel({
+  id: 'area_editor',
+  title: 'Area Editor',
+  url: '/areas',
+  scroll: 'vertical',
+  monitorOrientation: true,
+  load: function(data) {
+    this.getComponent('status').setTitle(data.get('name'));
+    this.getComponent('area-toolbar').setTitle(data.get('name'));
+    this.reset();
+    this.loadModel(data);
+    Ext.each(data.get('alerts'), function(message) {
+      var item = this.getComponent('alert').getComponent('message_' + message.id);
+      if (item) { item.setValue(true); }
+    }, this);
+    Ext.each(data.get('operationals'), function(message) {
+      var item = this.getComponent('operational').getComponent('message_' + message.id);
+      if (item) { item.setValue(true); }
+    }, this);
+    Ext.each(data.get('soil'), function(message) {
+      var item = this.getComponent('soil').getComponent('message_' + message.id);
+      if (item) { item.setValue(true); }
+    }, this);
+    Ext.each(data.get('snow'), function(message) {
+      var item = this.getComponent('snow').getComponent('message_' + message.id);
+      if (item) { item.setValue(true); }
+    }, this);
+  },
+  dockedItems: [{
+    itemId: 'area-toolbar',
+    dock: 'top',
+    title: 'Area Info',
+    xtype: 'toolbar',
+    defaults: { ui: 'plain', iconMask: true },
+    items: [{
+      iconCls: 'arrow_left',
+      handler: function() {
+        ATN.controller.fireEvent('back_area');
+      }
+    }, { xtype: 'spacer' }, {
+      ui: 'action',
+      text: 'Save',
+      handler: function() {
+        ATN.controller.fireEvent('save_area');
+      }
+    }]
+  }],
+  items: [{
+    xtype: 'hidden',
+    name: 'id'
+  },{
+    itemId: 'status',
+    title: 'Area name here',
+    xtype: 'fieldset',
+    items: [{
+      xtype: 'select',
+      name: 'travel_status',
+      label: 'Travel Status',
+      options: [
+        { text: 'Open', value: 'Open' },
+//        { text: 'Limited', value: 'Limited' },
+        { text: 'Closed', value: 'Closed' }
+      ]
+    }, {
+      xtype: 'textarea',
+      name: 'notes',
+      label: 'Notes'
+    }]
+  },{
+    itemId: 'soil',
+    title: 'Soil Status',
+    xtype: 'fieldset',
+    items: [
+      <%= Message.soil.collect { |m| message_checkbox(m).to_s }.join(',') %>
+    ]
+  },{
+    itemId: 'snow',
+    title: 'Snow Status',
+    xtype: 'fieldset',
+    items: [
+      <%= Message.snow.collect { |m| message_checkbox(m).to_s }.join(',') %>
+    ]
+  },{
+    itemId: 'operational',
+    title: 'Operational Considerations',
+    xtype: 'fieldset',
+    items: [
+      <%= Message.operational.collect { |m| message_checkbox(m).to_s }.join(',') %>
+    ]
+  },{
+    itemId: 'alert',
+    title: 'Alerts',
+    xtype: 'fieldset',
+    items: [
+      <%= Message.alert.collect { |m| message_checkbox(m).to_s }.join(',') %>
+    ]
+  }]
+});

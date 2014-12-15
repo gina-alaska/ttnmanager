@@ -1,0 +1,12 @@
+<p>
+  <div><b><%= @area.name -%> Area Alert</b></div>
+  <div>Last Updated: <%= @area.updated_at %></div>
+</p>
+
+<p>
+<% @area.alerts.each do |alert| -%>
+  <div style="padding-left: 15px;"><%= alert.full_text %></div>
+<% end -%>
+</p>
+
+<p>For more information, please contact the DMLW at 907-451-2740.</p>

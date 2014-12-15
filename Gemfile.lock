@@ -44,6 +44,7 @@ GEM
       erubis (>= 2.6.6)
       rack (>= 0.9.0)
     builder (3.2.2)
+    cancancan (1.9.2)
     celluloid (0.16.0)
       timers (~> 4.0.0)
     coderay (1.1.0)
@@ -220,6 +221,7 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   bower-tools!
+  cancancan
   coffee-rails (~> 4.0.0)
   google-api-client
   guard

@@ -47,6 +47,7 @@ gem "omniauth-github"
 gem "omniauth-google-oauth2"
 gem "omniauth-openid"
 gem "google-api-client"
+gem 'cancancan'
 
 group :development do
   gem 'better_errors'

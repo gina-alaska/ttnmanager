@@ -43,6 +43,7 @@ GEM
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
       rack (>= 0.9.0)
+    bootstrap_form (2.2.0)
     builder (3.2.2)
     cancancan (1.9.2)
     celluloid (0.16.0)
@@ -220,6 +221,7 @@ PLATFORMS
 
 DEPENDENCIES
   better_errors
+  bootstrap_form
   bower-tools!
   cancancan
   coffee-rails (~> 4.0.0)

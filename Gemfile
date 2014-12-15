@@ -48,6 +48,7 @@ gem "omniauth-google-oauth2"
 gem "omniauth-openid"
 gem "google-api-client"
 gem 'cancancan'
+gem 'bootstrap_form'
 
 group :development do
   gem 'better_errors'

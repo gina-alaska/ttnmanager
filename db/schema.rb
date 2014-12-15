@@ -11,7 +11,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141215170456) do
+ActiveRecord::Schema.define(version: 20141215194546) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "alerts", force: true do |t|
+    t.integer  "area_id"
+    t.text     "text"
+    t.boolean  "active",     default: true,  null: false
+    t.boolean  "system",     default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "areas", force: true do |t|
+    t.string   "name"
+    t.string   "travel_status"
+    t.string   "snow_status"
+    t.string   "soil_status"
+    t.string   "geom"
+    t.text     "notes"
+    t.integer  "order"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "areas_messages", force: true do |t|
+    t.integer  "area_id"
+    t.integer  "message_id"
+    t.string   "group"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "authorizations", force: true do |t|
     t.string   "provider"
@@ -24,6 +56,13 @@ ActiveRecord::Schema.define(version: 20141215170456) do
   create_table "memberships", force: true do |t|
     t.integer  "user_id"
     t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "messages", force: true do |t|
+    t.string   "mobile_text"
+    t.string   "full_text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

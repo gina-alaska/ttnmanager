@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+alert:
+  area: one
+  message: alert
+
+operational:
+  area: one
+  message: operational
+
+snow:
+  area: one
+  message: snow
+
+soil:
+  area: one
+  message: soil

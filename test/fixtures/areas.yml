@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
+  name: Area One
   travel_status: MyString
   snow_status: MyString
   soil_status: MyString
@@ -10,7 +10,7 @@ one:
   order: 1
 
 two:
-  name: MyString
+  name: Area Two
   travel_status: MyString
   snow_status: MyString
   soil_status: MyString

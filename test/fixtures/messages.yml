@@ -3,9 +3,7 @@
 one:
   mobile_text: MyString
   full_text: MyString
-  group: MyString
 
 two:
   mobile_text: MyString
   full_text: MyString
-  group: MyString

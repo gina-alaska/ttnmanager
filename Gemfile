@@ -47,3 +47,13 @@ gem "omniauth-github"
 gem "omniauth-google-oauth2"
 gem "omniauth-openid"
 gem "google-api-client"
+
+group :development do
+  gem 'better_errors'
+  gem 'guard'
+  gem 'guard-minitest'
+end
+
+group :test do
+  gem 'shoulda'
+end

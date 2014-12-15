@@ -1,0 +1,25 @@
+%p#notice= notice
+%p
+  %strong Name:
+  = @area.name
+%p
+  %strong Travel status:
+  = @area.travel_status
+%p
+  %strong Snow status:
+  = @area.snow_status
+%p
+  %strong Soil status:
+  = @area.soil_status
+%p
+  %strong Geom:
+  = @area.geom
+%p
+  %strong Notes:
+  = @area.notes
+%p
+  %strong Order:
+  = @area.order
+= link_to 'Edit', edit_area_path(@area)
+|
+\#{link_to 'Back', areas_path}

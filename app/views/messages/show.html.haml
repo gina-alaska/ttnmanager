@@ -1,0 +1,13 @@
+%p#notice= notice
+%p
+  %strong Mobile text:
+  = @message.mobile_text
+%p
+  %strong Full text:
+  = @message.full_text
+%p
+  %strong Group:
+  = @message.group
+= link_to 'Edit', edit_message_path(@message)
+|
+\#{link_to 'Back', messages_path}

@@ -1,0 +1,39 @@
+= form_for(@area) do |f|
+  - if @area.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@area.errors.count, "error")
+        prohibited this area from being saved:
+      %ul
+        - @area.errors.full_messages.each do |message|
+          %li= message
+  .field
+    = f.label :name
+    %br/
+    = f.text_field :name
+  .field
+    = f.label :travel_status
+    %br/
+    = f.text_field :travel_status
+  .field
+    = f.label :snow_status
+    %br/
+    = f.text_field :snow_status
+  .field
+    = f.label :soil_status
+    %br/
+    = f.text_field :soil_status
+  .field
+    = f.label :geom
+    %br/
+    = f.text_field :geom
+  .field
+    = f.label :notes
+    %br/
+    = f.text_area :notes
+  .field
+    = f.label :order
+    %br/
+    = f.number_field :order
+  .actions
+    = f.submit

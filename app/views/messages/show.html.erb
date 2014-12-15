@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Mobile text:</strong>
+  <%= @message.mobile_text %>
+</p>
+
+<p>
+  <strong>Full text:</strong>
+  <%= @message.full_text %>
+</p>
+
+<p>
+  <strong>Group:</strong>
+  <%= @message.group %>
+</p>
+
+<%= link_to 'Edit', edit_message_path(@message) %> |
+<%= link_to 'Back', messages_path %>

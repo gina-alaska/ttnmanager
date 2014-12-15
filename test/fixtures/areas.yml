@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  travel_status: MyString
+  snow_status: MyString
+  soil_status: MyString
+  geom: MyString
+  notes: MyText
+  order: 1
+
+two:
+  name: MyString
+  travel_status: MyString
+  snow_status: MyString
+  soil_status: MyString
+  geom: MyString
+  notes: MyText
+  order: 1

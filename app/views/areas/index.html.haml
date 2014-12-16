@@ -4,8 +4,6 @@
     %tr
       %th Name
       %th Travel status
-      %th Snow status
-      %th Soil status
       %th Geom
       %th Notes
       %th Order
@@ -15,13 +13,6 @@
       %tr
         %td= area.name
         %td= area.travel_status
-        %td= area.snow_status
-        %td= area.soil_status
         %td= area.geom
         %td= area.notes
         %td= area.order
-        %td= link_to 'Show', area
-        %td= link_to 'Edit', edit_area_path(area)
-        %td= link_to 'Destroy', area, method: :delete, data: { confirm: 'Are you sure?' }
-%br/
-= link_to 'New Area', new_area_path

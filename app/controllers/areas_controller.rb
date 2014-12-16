@@ -41,6 +41,20 @@ class AreasController < ApplicationController
     end
   end
 
+  def open
+    @areas = Area.where(travel_status: 'Open')
+    respond_to do |format|
+      format.geojson
+    end
+  end
+
+  def closed
+    @areas = Area.where(travel_status: 'Closed')
+    respond_to do |format|
+      format.geojson
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_area

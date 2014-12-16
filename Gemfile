@@ -49,6 +49,7 @@ gem "omniauth-openid"
 gem "google-api-client"
 gem 'cancancan'
 gem 'bootstrap_form'
+gem 'georuby'
 
 group :development do
   gem 'better_errors'

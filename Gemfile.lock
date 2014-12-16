@@ -63,6 +63,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     ffi (1.9.6)
     formatador (0.2.5)
+    georuby (2.3.0)
     google-api-client (0.7.1)
       addressable (>= 2.3.2)
       autoparse (>= 0.3.3)
@@ -229,6 +230,7 @@ DEPENDENCIES
   bower-tools!
   cancancan
   coffee-rails (~> 4.0.0)
+  georuby
   google-api-client
   guard
   guard-minitest

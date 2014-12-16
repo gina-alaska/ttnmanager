@@ -1,39 +1,8 @@
-= form_for(@area) do |f|
-  - if @area.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(@area.errors.count, "error")
-        prohibited this area from being saved:
-      %ul
-        - @area.errors.full_messages.each do |message|
-          %li= message
-  .field
-    = f.label :name
-    %br/
-    = f.text_field :name
-  .field
-    = f.label :travel_status
-    %br/
-    = f.text_field :travel_status
-  .field
-    = f.label :snow_status
-    %br/
-    = f.text_field :snow_status
-  .field
-    = f.label :soil_status
-    %br/
-    = f.text_field :soil_status
-  .field
-    = f.label :geom
-    %br/
-    = f.text_field :geom
-  .field
-    = f.label :notes
-    %br/
-    = f.text_area :notes
-  .field
-    = f.label :order
-    %br/
-    = f.number_field :order
-  .actions
-    = f.submit
+= bootstrap_form_for(@area) do |f|
+  = f.select :travel_status, Area::TravelStatus, label: 'Travel Status:'
+  = f.collection_check_boxes :alert_message_ids, Message.alert, :id, :full_text, label: 'Alert Conditions'
+  = f.collection_check_boxes :operational_message_ids, Message.operational, :id, :full_text, label: 'Operational Conditions'
+  = f.collection_radio_buttons :snow_message_id, Message.snow, :id, :full_text, label: 'Snow Conditions'
+  = f.collection_radio_buttons :soil_message_id, Message.soil, :id, :full_text, label: 'Soil Conditions'
+  = f.text_field :notes
+  = f.submit

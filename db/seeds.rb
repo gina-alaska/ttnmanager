@@ -1,8 +1,8 @@
 Area.create([
-  { :name => 'Western Coastal', :travel_status => 'Open', :snow_status => 'Good', :soil_status => 'Good'},
-  { :name => 'Eastern Coastal', :travel_status => 'Open', :snow_status => 'Good', :soil_status => 'Good' },
-  { :name => 'Lower Foothills', :travel_status => 'Closed', :soil_status => 'Good', :snow_status => 'Improving' },
-  { :name => 'Upper Foothills', :travel_status => 'Closed', :soil_status => 'Improving', :snow_status => 'Bad' }
+  { :name => 'Western Coastal', :travel_status => 'Open' },
+  { :name => 'Eastern Coastal', :travel_status => 'Open' },
+  { :name => 'Lower Foothills', :travel_status => 'Closed' },
+  { :name => 'Upper Foothills', :travel_status => 'Closed' }
 ])
 
 Message.create([

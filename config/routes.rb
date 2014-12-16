@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :messages
-  resources :areas do
+  resources :areas, except: [:create, :destroy] do
     collection do
       get :overview
     end

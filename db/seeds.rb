@@ -1,11 +1,11 @@
-Area.create([
+Area.first_or_create([
   { :name => 'Western Coastal', :travel_status => 'Open' },
   { :name => 'Eastern Coastal', :travel_status => 'Open' },
   { :name => 'Lower Foothills', :travel_status => 'Closed' },
   { :name => 'Upper Foothills', :travel_status => 'Closed' }
 ])
 
-Message.create([
+Message.first_or_create([
   { :group => 'soil', :mobile_text => 'Criteria Met', :full_text => 'Criteria Met' },
   { :group => 'soil', :mobile_text => 'Too Warm', :full_text => 'Too Warm' },
   { :group => 'snow', :mobile_text => 'Depth Criteria Met', :full_text => 'Depth Criteria Met' },
@@ -25,3 +25,16 @@ Message.create([
   { :group => 'alert', :mobile_text => 'Rain warning, rain may result in loss of snow', :full_text => 'Rain warning, rain may result in loss of snow' },
   { :group => 'alert', :mobile_text => 'Big snow event expected', :full_text => 'Big snow event expected' }
 ])
+
+
+require 'csv'
+
+CSV.foreach('vendor/areas/tundra.csv', headers: true) do |row|
+  area = Area.where(name: row['Name']).first
+  if !area.nil?
+    area.geom = row['WKT']
+    area.save
+  else
+    puts "Couldn't find area: #{row['Name']}"
+  end
+end

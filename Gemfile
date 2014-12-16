@@ -50,6 +50,7 @@ gem "google-api-client"
 gem 'cancancan'
 gem 'bootstrap_form'
 gem 'georuby'
+gem 'friendly_id'
 
 group :development do
   gem 'better_errors'

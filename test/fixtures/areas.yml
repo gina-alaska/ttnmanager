@@ -3,8 +3,6 @@
 one:
   name: Area One
   travel_status: MyString
-  snow_status: MyString
-  soil_status: MyString
   geom: MyString
   notes: MyText
   order: 1
@@ -12,8 +10,6 @@ one:
 two:
   name: Area Two
   travel_status: MyString
-  snow_status: MyString
-  soil_status: MyString
   geom: MyString
   notes: MyText
   order: 1

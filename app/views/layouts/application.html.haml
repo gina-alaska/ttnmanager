@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title Arctic Travel Network Manager
+    %title Tundra Travel Network Manager
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
@@ -9,13 +9,13 @@
     .navbar.navbar-default
       .container-fluid
         .navbar-header
-          =link_to "ATN Travel Status", root_url, class: 'navbar-brand'
+          =link_to "TTN Travel Status", root_url, class: 'navbar-brand'
         %ul.nav.navbar-nav.navbar-right
           %li= link_to "Developer API", '#'
           %li= render 'layouts/login'
 
 
-    .content
+    .container.content
       .flash
-
+        = render 'layouts/flash_messages'
       = yield

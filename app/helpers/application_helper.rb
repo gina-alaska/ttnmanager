@@ -1,8 +1,13 @@
 module ApplicationHelper
-  def login_helper
-    #if current_user.logged_in?
-      #"Logout"
-    #else
-    link_to "Login", "#"
+
+  def bootstrap_flash_type(type)
+    case type
+    when 'notice'
+      'success'
+    when 'error'
+      'danger'
+    else
+      'info'
+    end
   end
 end

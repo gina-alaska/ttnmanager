@@ -11,4 +11,9 @@
     # }
     # provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET']
     provider :openid, :store => OpenID::Store::Filesystem.new("./tmp"), :name => 'gina', :identifier => 'https://id.gina.alaska.edu'
+    provider :google_oauth2, Rails.application.secrets.google_key, Rails.application.secrets.google_secret, {
+      name: 'google',
+      scope: 'userinfo.profile,userinfo.email',
+      include_granted_scopes: true
+    }
   end

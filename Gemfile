@@ -24,7 +24,7 @@ gem "omniauth-openid"
 gem "google-api-client"
 gem 'cancancan'
 gem 'bootstrap_form'
-gem 'georuby'
+gem 'georuby', '~> 2.3.0'
 gem 'friendly_id'
 
 group :development do

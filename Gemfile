@@ -26,6 +26,7 @@ gem 'cancancan'
 gem 'bootstrap_form'
 gem 'georuby', '~> 2.3.0'
 gem 'friendly_id'
+gem 'httparty'
 
 group :development do
   gem 'better_errors'

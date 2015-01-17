@@ -10,6 +10,7 @@ class Area < ActiveRecord::Base
   has_many :alert_messages, -> {alert}, through: :areas_messages, source: :message
   has_many :operational_messages, -> {operational}, through: :areas_messages, source: :message
 
+  after_update :regenerate_overview_image
 
   TravelStatus = %w{open closed}.map{|s| [s.capitalize, s]}
 
@@ -23,5 +24,10 @@ class Area < ActiveRecord::Base
     define_method(field.chomp("_id")) do       # def snow_message
       self.send("#{field}s".to_sym).first      #   self.send(:snow_messages).first
     end                                        # end
+  end
+
+  private
+  def regenerate_overview_image
+    ImageCacheJob.perform_later('overview')
   end
 end

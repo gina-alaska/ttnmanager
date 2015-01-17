@@ -16,6 +16,8 @@
 
 
     .container.content
-      .flash
-        = render 'layouts/flash_messages'
-      = yield
+      .row
+        .flash
+          = render 'layouts/flash_messages'
+      .row
+        = yield

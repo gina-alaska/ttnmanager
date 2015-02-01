@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
   def index
-    @areas = Area.all
+    @areas = Area.order(:name)
   end
 end

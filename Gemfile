@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 gem 'sass-rails', '~> 4.0.3'
@@ -15,7 +14,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 # gem 'unicorn'
 gem "haml"
-gem "bower-tools", github: "gina-alaska/bower-tools"
+gem 'bower-rails'
 gem "pg"
 gem "omniauth"
 gem "omniauth-github"

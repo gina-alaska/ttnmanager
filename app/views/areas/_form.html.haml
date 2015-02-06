@@ -5,4 +5,16 @@
   = f.collection_radio_buttons :snow_message_id, Message.snow, :id, :full_text, label: 'Snow Conditions'
   = f.collection_radio_buttons :soil_message_id, Message.soil, :id, :full_text, label: 'Soil Conditions'
   = f.text_field :notes
-  = f.submit
+  = f.submit data: {target: '#updateAreasModal', toggle: 'modal'}
+
+
+#updateAreasModal.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h4 Updating Areas
+      .modal-body
+        Regenerating overview images, please be patient.
+        .progress
+          .progress-bar.progress-bar-striped.active{style: "width: 100%"}
+        

@@ -13,4 +13,8 @@
         .flash
           = render 'layouts/flash_messages'
       .row
-        = yield
+        .col-md-2
+          .list-group
+            = link_to "Users", admin_users_path, class: 'list-group-item active'
+        .col-md-10
+          = yield

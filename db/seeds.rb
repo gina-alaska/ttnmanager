@@ -29,7 +29,7 @@ Message.first_or_create([
 
 require 'csv'
 
-CSV.foreach('vendor/areas/tundra.csv', headers: true) do |row|
+CSV.foreach('vendor/areas/tundra-simple.csv', headers: true) do |row|
   area = Area.where(name: row['Name']).first
   if !area.nil?
     area.geom = row['WKT']

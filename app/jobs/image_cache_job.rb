@@ -21,13 +21,13 @@ class ImageCacheJob < ActiveJob::Base
   def determine_size(size)
     case size.to_sym
     when :small
-      [300,200]
+      [300,225]
     when :medium
       [800,600]
     when :large
       [1600,1200]
     else
-      [550,300]
+      [400,300]
     end
   end
 end

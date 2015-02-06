@@ -1,0 +1,9 @@
+.overview
+  = image_tag("#{areas_path}/overview.png?size=small", alt: "Tundra Area Travel Status")
+  .notes
+    Note:  Information presented here applies only to lands owned by the State of Alaska.
+
+.row
+  .col-xs-6.col-xs-offset-3
+    #areas.list-group
+      = render partial: 'area', collection: @areas

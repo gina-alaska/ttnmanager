@@ -13,5 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap/dist/js/bootstrap
+//= require bootstrap-switch/dist/js/bootstrap-switch.min
 //= require turbolinks
 //= require_tree .

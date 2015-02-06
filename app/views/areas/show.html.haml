@@ -1,14 +1,28 @@
-%p#notice= notice
+.col-sm-6.col-sm-offset-3.col-xs-8.col-xs-offset-2.area
+  %h3
+    = @area.name
 
-%p
-  %strong Name:
-  = @area.name
-%p
-  %strong Travel status:
-  = @area.travel_status
-%p
-  %strong Notes:
-  = @area.notes
+  - if can? :manage, @area
+    = link_to edit_area_path(@area), class: 'btn btn-primary btn-block' do
+      %i.fa.fa-inverse.fa-edit
+      Update
 
-%p
-  = link_to "Edit", edit_area_path(@area)
+  %h4= "Updated: #{time_ago_in_words @area.updated_at} ago"
+  .list-group
+    .list-group-item{class: area_class(@area)}
+      = @area.travel_status.humanize
+  .list-group
+    .list-group-item.active Soil Temperature
+    .list-group-item= @area.soil_messages.first.try(:full_text)
+  .list-group
+    .list-group-item.active Snow Status
+    .list-group-item= @area.snow_messages.first.try(:full_text)
+
+  - unless @area.alert_messages.empty?
+    .list-group
+      .list-group-item.active Alerts
+      = render partial: 'alert', collection: @area.alert_messages
+  - unless @area.operational_messages.empty?
+    .list-group
+      .list-group-item.active Operational Considerations
+      = render partial: 'alert', collection: @area.operational_messages

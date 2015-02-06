@@ -1,8 +1,6 @@
-.col-md-3.col-sm-6.area
+.col-sm-3.col-xs-5.col-sm-offset-0.col-xs-offset-1
   %h3
-    = area.name
-    - if can? :manage, area
-      %small= link_to "[update]", edit_area_path(area)
+    = link_to area.name, area_path(area)
   %h4= "Updated: #{time_ago_in_words area.updated_at} ago"
   %div
     %label Travel Status

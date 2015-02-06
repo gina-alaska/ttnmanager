@@ -2,8 +2,6 @@ class Area < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged
 
-  default_scope { order('name') }
-
   has_many :areas_messages
   has_many :messages, through: :areas_messages
 
@@ -14,7 +12,7 @@ class Area < ActiveRecord::Base
 
   after_update :regenerate_overview_image
 
-  TravelStatus = %w{open closed}.map{|s| [s.capitalize, s]}
+  TravelStatus = %w{Open Closed}.map{|s| [s, s]}
 
   %w{snow_message_id soil_message_id }.each do |field|
     define_method("#{field}=".to_sym) do |id|  # def snow_message_id=(id)

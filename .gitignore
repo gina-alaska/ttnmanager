@@ -10,3 +10,4 @@ public/images/overview*
 db/data
 .sass-cache
 /config/database.yml
+.powenv

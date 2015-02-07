@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   private
   def set_variant
-    request.variant = :mobile if browser.mobile?
+    request.variant = :mobile if browser.mobile? or browser.tablet?
     request.variant = :mobile if params[:mobile].present?
   end
 end

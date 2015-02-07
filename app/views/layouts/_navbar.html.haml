@@ -2,9 +2,16 @@
   .container-fluid
     .navbar-header
       =link_to "TTN Travel Status", root_url, class: 'navbar-brand'
-    %ul.nav.navbar-nav.navbar-right
-      - if current_user.admin?
-        %li= link_to "Admin", admin_users_path
-      %li= link_to "Developer API", '#'
-      %li= render 'layouts/login'
+      %button.navbar-toggle.collapsed{data: {toggle: 'collapse', target: '#navbar-menu'}}
+        %span.sr-only 'Toggle Nav'
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+
+    #navbar-menu.collapse.navbar-collapse
+      %ul.nav.navbar-nav.navbar-right
+        - if current_user.admin?
+          %li= link_to "Admin", admin_users_path
+        %li= link_to "Developer API", '#'
+        %li= render 'layouts/login'
 

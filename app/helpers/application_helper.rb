@@ -1,4 +1,7 @@
 module ApplicationHelper
+  def image_size
+    browser.mobile? ? 'small' : 'medium'
+  end
 
   def bootstrap_flash_type(type)
     case type

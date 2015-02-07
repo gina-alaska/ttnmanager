@@ -1,7 +1,2 @@
-.overview
-  = link_to image_tag("#{areas_path}/overview.png?size=medium", alt: "Tundra Area Travel Status"),
-    "#{areas_path}/overview.png?size=large", target: '_blank'
-  .notes
-    Note:  Information presented here applies only to lands owned by the State of Alaska.
-
+= render 'map'
 = render partial: 'area', collection: @areas

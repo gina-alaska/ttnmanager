@@ -5,17 +5,11 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
+    %meta{name: 'viewport', content:"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" }
   %body
-    .navbar.navbar-default
-      .container-fluid
-        .navbar-header
-          =link_to "Mobile TTN Travel Status", root_url, class: 'navbar-brand'
-        %ul.nav.navbar-nav.navbar-right
-          %li= link_to "Login", "#"
+    = render 'layouts/navbar'
 
-    .container.content
-      .row
-        .flash
-          = render 'layouts/flash_messages'
-      .row
-        = yield
+    .container
+      .flash
+        = render 'layouts/flash_messages'
+      = yield

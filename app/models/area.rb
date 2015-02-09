@@ -10,7 +10,7 @@ class Area < ActiveRecord::Base
   has_many :alert_messages, -> {alert}, through: :areas_messages, source: :message
   has_many :operational_messages, -> {operational}, through: :areas_messages, source: :message
 
-  after_update :regenerate_overview_image
+  after_commit :regenerate_overview_image, on: :update
 
   TravelStatus = %w{Open Closed}.map{|s| [s, s]}
 

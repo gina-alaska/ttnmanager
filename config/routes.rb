@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/status', to: 'status#index'
   get '/docs', to: 'doc#index'
   root :to => 'welcome#index'
 

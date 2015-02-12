@@ -1,0 +1,5 @@
+.overview
+  = link_to_unless browser.mobile?, image_tag("#{areas_path}/overview.png?size=#{image_size}", alt: "Tundra Area Travel Status"),
+    "#{areas_path}/overview.png?size=large", target: '_blank'
+  %p.lead.text-info
+    Note:  Information presented here applies only to lands owned by the State of Alaska.

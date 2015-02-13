@@ -13,7 +13,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 gem "haml"
-gem 'bower-rails'
+# gem 'bower-rails'
 gem "pg"
 gem "omniauth"
 gem "omniauth-github"
@@ -42,5 +42,12 @@ group :production do
 end
 
 gem 'puma'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-bootstrap'
+  gem 'rails-assets-font-awesome'
+  gem 'rails-assets-bootstrap-switch'
+  # gem 'jquery'
+end
 
 ruby "2.2.0"

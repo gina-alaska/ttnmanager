@@ -27,3 +27,8 @@
     .list-group
       .list-group-item.active Operational Considerations
       = render partial: 'alert', collection: @area.operational_messages
+  - unless @area.notes.blank?
+    .list-group
+      .list-group-item.active Notes
+      .list-group-item
+        = @area.notes

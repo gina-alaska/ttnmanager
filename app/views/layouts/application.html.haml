@@ -8,13 +8,12 @@
   %body
     = render 'layouts/analytics'
     = render 'layouts/navbar'
-    .container.content
-      .row
+    .container-fluid.content
+      %div
         .flash
           = render 'layouts/flash_messages'
-      .row
-        = yield
-      .row.footer
+      %div= yield
+      %div.footer
         = link_to image_tag("akdnr-logo.png"), 'http://dnr.alaska.gov'
         = link_to image_tag("UAFLogo_A_647-small.png"), 'http://www.uaf.edu'
         = link_to image_tag("gina-logo2.png"), 'http://gina.alaska.edu'

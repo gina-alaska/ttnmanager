@@ -1,11 +1,17 @@
 = bootstrap_form_for(@area) do |f|
-  = f.select :travel_status, Area::TravelStatus, label: 'Travel Status:'
-
-  = f.collection_check_boxes :alert_message_ids, Message.alert, :id, :full_text, label: 'Alert Conditions'
-  = f.collection_check_boxes :operational_message_ids, Message.operational, :id, :full_text, label: 'Operational Conditions'
-  = f.collection_radio_buttons :snow_message_id, Message.snow, :id, :full_text, label: 'Snow Conditions'
-  = f.collection_radio_buttons :soil_message_id, Message.soil, :id, :full_text, label: 'Soil Conditions'
-  = f.text_field :notes
+  .row
+    .col-sm-7
+      = f.select :travel_status, Area::TravelStatus, label: 'Travel Status:'
+    .col-sm-5
+      = f.number_field :order, help: 'What order should the areas appear on the site? Lower number show up first'
+  .row
+    .col-sm-7
+      = f.collection_check_boxes :operational_message_ids, Message.operational, :id, :full_text, label: 'Operational Conditions'
+    .col-sm-5
+      = f.collection_check_boxes :alert_message_ids, Message.alert, :id, :full_text, label: 'Alert Conditions'
+      = f.collection_radio_buttons :snow_message_id, Message.snow, :id, :full_text, label: 'Snow Conditions'
+      = f.collection_radio_buttons :soil_message_id, Message.soil, :id, :full_text, label: 'Soil Conditions'
+  = f.text_area :notes, rows: 10
   = f.submit class: 'btn btn-primary', data: {target: '#updateAreasModal', toggle: 'modal'}
 
 

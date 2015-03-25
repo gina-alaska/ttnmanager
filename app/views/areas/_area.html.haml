@@ -1,0 +1,40 @@
+%h1= @area.name
+
+.list-group
+  .list-group-item{class: area_class(@area)}
+    Current Status:
+    = @area.travel_status.humanize
+- unless @area.soil_messages.empty?
+  .panel.panel-default
+    .panel-heading
+      Soil Temperature
+    .list-group
+      .list-group-item= @area.soil_messages.first.try(:full_text)
+- unless @area.snow_messages.empty?
+  .panel.panel-default
+    .panel-heading
+      Snow Status
+    .list-group
+      .list-group-item= @area.snow_messages.first.try(:full_text)
+
+- unless @area.alert_messages.empty?
+  .panel.panel-default
+    .panel-heading
+      Alerts
+    .list-group
+      = render partial: 'alert', collection: @area.alert_messages
+- unless @area.operational_messages.empty?
+  .panel.panel-default
+    .panel-heading
+      Operational Considerations
+    .list-group
+      = render partial: 'alert', collection: @area.operational_messages
+- unless @area.notes.blank?
+  .panel.panel-default
+    .panel-heading
+      Notes
+    .list-group
+      .list-group-item
+        = @area.notes
+
+%h4= "Updated: #{time_ago_in_words @area.updated_at} ago"

@@ -18,3 +18,16 @@
     height: 100px;
   }
 }
+
+.area-panel {
+  a.panel-title {
+    color: #337ab7;
+    font-size: 1.4em;
+  }
+  p { margin-bottom: 0px; }
+
+  dt {
+    margin-top: 5px;
+    font-size: 1.1em;
+  }
+}

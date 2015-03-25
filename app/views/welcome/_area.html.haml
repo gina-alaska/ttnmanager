@@ -1,26 +1,29 @@
 .col-sm-3.col-xs-5.col-sm-offset-0.col-xs-offset-1
-  %h3
-    = link_to area.name, area_path(area)
-  %h4 Updated #{time_ago_in_words area.updated_at} ago
-  %div
-    %label Travel Status
-    %span{class: area.travel_status}= area.travel_status
-  %div
-    %label Soil Temperature
-    %span= area.soil_messages.first.try(:full_text)
-  %div
-    %label Snow Status
-    %span= area.snow_messages.first.try(:full_text)
+  .panel.panel-default.area-panel
+    .panel-heading
+      = link_to area.name, area_path(area), class: 'panel-title'
+      %p Updated #{time_ago_in_words area.updated_at} ago
+      .ribbon{ class: "ribbon-#{area.travel_status.downcase}"}= area.travel_status
+    .panel-body
+      %div
+        %label Travel Status
+        %span{class: area.travel_status}= area.travel_status
+      %div
+        %label Soil Temperature
+        %span= area.soil_messages.first.try(:full_text)
+      %div
+        %label Snow Status
+        %span= area.snow_messages.first.try(:full_text)
 
-  - unless area.alert_messages.empty?
-    %label Alerts
-    .messages
-      = render partial: 'alert', collection: area.alert_messages
-  - unless area.operational_messages.empty?
-    %label Operational Considerations
-    .messages
-      = render partial: 'alert', collection: area.operational_messages
-  - unless area.notes.blank?
-    %label Notes
-    .messagaes
-      = area.notes
+      - unless area.alert_messages.empty?
+        %label Alerts
+        .messages
+          = render partial: 'alert', collection: area.alert_messages
+      - unless area.operational_messages.empty?
+        %label Operational Considerations
+        .messages
+          = render partial: 'alert', collection: area.operational_messages
+      - unless area.notes.blank?
+        %label Notes
+        .messagaes
+          = area.notes

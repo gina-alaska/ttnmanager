@@ -1,0 +1,36 @@
+.ribbon {
+  /* positioning */
+  text-align: center;
+  position: absolute;
+  padding: 5px;
+  width: 100px;
+  /* top right of the page */
+  top: 20px;
+  right: 0px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  /* effects with some shadow */
+  text-shadow: 0 0 0 #ffffff, 0 0 5px rgba(0, 0, 0, 0.3);
+  /* looks */
+  color: #ffffff;
+  font-size: 13px;
+  font-family: sans-serif;
+  text-decoration: none;
+  font-weight: bold;
+  /* ribbon effects */
+  border: 2px dotted #ffffff;
+  /* webkit antialias fix */
+  -webkit-backface-visibility: hidden;
+  letter-spacing: .5px;
+}
+
+.ribbon-open {
+  background-color: #249b3c;
+  box-shadow: 0 0 0 3px #249b3c, 0 0 20px -3px rgba(0, 0, 0, 0.5);
+}
+.ribbon-closed {
+  box-shadow: 0 0 0 3px #d32e1c, 0 0 20px -3px rgba(0, 0, 0, 0.5);
+  background-color: #d32e1c;
+}

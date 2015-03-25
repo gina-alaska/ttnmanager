@@ -1,7 +1,7 @@
 .col-sm-3.col-xs-5.col-sm-offset-0.col-xs-offset-1
   %h3
     = link_to area.name, area_path(area)
-  %h4= "Updated: #{time_ago_in_words area.updated_at} ago"
+  %h4 Updated #{time_ago_in_words area.updated_at} ago
   %div
     %label Travel Status
     %span{class: area.travel_status}= area.travel_status

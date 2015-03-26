@@ -20,9 +20,17 @@
 }
 
 .area-panel {
-  a.panel-title {
+  position: relative;
+
+  h1.panel-title {
+    font-size: 2em;
+  }
+  h1 small {
+    font-size: 0.5em;
+    color: #555;
+  }
+  h1.panel-title a {
     color: #337ab7;
-    font-size: 1.4em;
   }
   p { margin-bottom: 0px; }
 

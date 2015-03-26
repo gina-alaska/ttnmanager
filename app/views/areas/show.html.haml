@@ -1,8 +1,9 @@
 .row
-  .col-sm-6.col-sm-offset-3
+  .col-md-6.col-md-offset-3
     - if can? :manage, @area
-      = link_to edit_area_path(@area), class: 'btn btn-primary pull-right' do
-        %i.fa.fa-inverse.fa-edit
-        Edit
+      %p
+        = link_to edit_area_path(@area), class: 'btn btn-primary btn-block' do
+          %i.fa.fa-inverse.fa-edit
+          Edit
 
     = render @area

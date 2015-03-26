@@ -10,11 +10,11 @@ module AreasHelper
   def area_class(area)
     case area.travel_status.downcase
     when 'open'
-      'list-group-item list-group-item-success'
+      'list-group-item-success'
     when 'closed'
-      'list-group-item list-group-item-danger'
+      'list-group-item-danger'
     else
-      'list-group-item list-group-item-default'
+      'list-group-item-default'
     end
   end
 end

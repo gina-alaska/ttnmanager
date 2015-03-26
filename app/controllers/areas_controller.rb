@@ -66,7 +66,7 @@ class AreasController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def area_params
-      params.require(:area).permit(:name, :travel_status, :geom, :notes, :order, :message_ids,
+      params.require(:area).permit(:name, :travel_status, :geom, :notes, :order, :as_of, :message_ids,
         :snow_message_id, :soil_message_id, :alert_message_ids => [], :operational_message_ids => [])
     end
 

@@ -1,1 +1,4 @@
-= link_to area.name, area_path(area), class: area_class(area)
+= link_to area_path(area), class: 'list-group-item' do
+  #{area.name}
+  .badge.pull-right{ class: area_class(area) }
+    #{area.travel_status}

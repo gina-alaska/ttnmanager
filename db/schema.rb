@@ -11,20 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150117002944) do
+ActiveRecord::Schema.define(version: 20150326200011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "areas", force: :cascade do |t|
-    t.string   "name",          limit: 255
-    t.string   "travel_status", limit: 255
+    t.string   "name"
+    t.string   "travel_status"
     t.text     "geom"
     t.text     "notes"
     t.integer  "order"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "slug",          limit: 255
+    t.string   "slug"
+    t.date     "as_of"
   end
 
   create_table "areas_messages", force: :cascade do |t|
@@ -35,18 +36,18 @@ ActiveRecord::Schema.define(version: 20150117002944) do
   end
 
   create_table "authorizations", force: :cascade do |t|
-    t.string   "provider",   limit: 255
-    t.string   "uid",        limit: 255
+    t.string   "provider"
+    t.string   "uid"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
-    t.string   "slug",           limit: 255, null: false
-    t.integer  "sluggable_id",               null: false
+    t.string   "slug",                      null: false
+    t.integer  "sluggable_id",              null: false
     t.string   "sluggable_type", limit: 50
-    t.string   "scope",          limit: 255
+    t.string   "scope"
     t.datetime "created_at"
   end
 
@@ -65,23 +66,23 @@ ActiveRecord::Schema.define(version: 20150117002944) do
 
   create_table "memberships", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "email",      limit: 255
+    t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "messages", force: :cascade do |t|
-    t.string   "mobile_text", limit: 255
-    t.string   "full_text",   limit: 255
-    t.string   "group",       limit: 255, null: false
+    t.string   "mobile_text"
+    t.string   "full_text"
+    t.string   "group",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "email",      limit: 255
-    t.string   "avatar",     limit: 255
+    t.string   "name"
+    t.string   "email"
+    t.string   "avatar"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "role"

@@ -22,10 +22,10 @@ class AreasController < ApplicationController
     @image = Image.where(name: 'overview', size: (params[:size] || 'medium')).first
     respond_to do |format|
       format.png do
-        send_data Base64.decode64(@image.try(:data)), type: 'image/png', disposition: 'inline'
+        send_data Base64.decode64(@image.try(:data)), type: :png, disposition: 'inline'
       end
       format.jpg do
-        send_data Base64.decode64(@image.try(:data)), type: 'image/jpg', disposition: 'inline'
+        send_data Base64.decode64(@image.try(:data)), type: :jpg, disposition: 'inline'
       end
     end
   end

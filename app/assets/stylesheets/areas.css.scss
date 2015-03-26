@@ -24,10 +24,13 @@
 
   h1.panel-title {
     font-size: 2em;
+    margin-right: 30px;
   }
   h1 small {
     font-size: 0.5em;
     color: #555;
+    white-space: normal;
+    display: block;
   }
   h1.panel-title a {
     color: #337ab7;

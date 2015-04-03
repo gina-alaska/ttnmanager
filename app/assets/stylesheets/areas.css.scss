@@ -9,13 +9,29 @@
   }
 }
 
+.areas {
+  margin: 0 20px;
+}
+
+.inline-area {
+  text-align: left;
+  width: 350px;
+  margin-right: 20px;
+  display: inline-block;
+  vertical-align: top;
+}
+
 .footer {
   padding-top: 40px;
   text-align: center;
+  margin-bottom: 15px;
+
+  .logo {
+    width: 300px;
+    display: inline-block;
+  }
   img {
-    padding-right: 20px;
-    padding-left: 20px;
-    height: 100px;
+    max-width: 100%;
   }
 }
 

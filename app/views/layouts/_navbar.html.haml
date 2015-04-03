@@ -1,4 +1,4 @@
-.navbar.navbar-default
+.navbar.navbar-default.navbar-static-top
   .container-fluid
     .navbar-header
       =link_to "TTN Travel Status", root_url, class: 'navbar-brand'
@@ -14,4 +14,3 @@
           %li= link_to "Admin", admin_users_path
         %li= link_to "About", '#'
         %li= render 'layouts/login'
-

@@ -3,7 +3,7 @@
 one:
   name: Area One
   travel_status: MyString
-  geom: MyString
+  geom: "MULTIPOLYGON (((-148.719635669129673 68.697828316713498,-148.718755077655373 68.52558260464734)))"
   notes: MyText
   order: 1
 

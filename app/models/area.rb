@@ -26,6 +26,10 @@ class Area < ActiveRecord::Base
     end                                        # end
   end
 
+  def geometry
+    GeoRuby::SimpleFeatures::Geometry.from_ewkt(geom)
+  end
+
   private
   def regenerate_overview_image
     ImageCacheJob.perform_later('overview')

@@ -1,11 +1,18 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+admin:
+  name: Admin
   email: MyString
   avatar: MyString
+  role: admin
 
-two:
-  name: MyString
+manager:
+  name: Manager
+  email: MyString
+  avatar: MyString
+  role: manager
+  
+guest:
+  name: Guest
   email: MyString
   avatar: MyString

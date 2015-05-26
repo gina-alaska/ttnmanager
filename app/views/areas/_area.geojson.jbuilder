@@ -1,5 +1,5 @@
 json.type 'Feature'
-json.geometry GeoRuby::SimpleFeatures::Geometry.from_ewkt(area.geom).as_json
+json.geometry area.geometry.as_json
 json.properties do
   json.alerts area.alert_messages unless area.alert_messages.blank?
   json.operational_considerations area.operational_messages unless area.operational_messages.blank?

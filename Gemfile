@@ -35,6 +35,7 @@ end
 
 group :test do
   gem 'shoulda'
+  gem 'mocha'
 end
 
 group :production do

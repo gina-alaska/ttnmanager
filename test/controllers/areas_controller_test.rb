@@ -5,6 +5,7 @@ class AreasControllerTest < ActionController::TestCase
     @area = areas(:one)
   end
 
+
   test "should get index" do
     get :index
     assert_response :success
@@ -17,11 +18,13 @@ class AreasControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
+    login_user(:manager)
     get :edit, id: @area
     assert_response :success
   end
 
   test "should update area" do
+    login_user(:manager)
     patch :update, id: @area, area: { geom: @area.geom, name: @area.name, notes: @area.notes, order: @area.order, travel_status: @area.travel_status }
     assert_redirected_to area_path(assigns(:area))
   end

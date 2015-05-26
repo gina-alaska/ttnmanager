@@ -12,5 +12,5 @@
       %ul.nav.navbar-nav.navbar-right
         - if current_user.admin?
           %li= link_to "Admin", admin_users_path
-        %li= link_to "About", '#'
+        %li= link_to "About", page_path(:about)
         %li= render 'layouts/login'

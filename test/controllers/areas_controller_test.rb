@@ -21,6 +21,7 @@ class AreasControllerTest < ActionController::TestCase
     login_user(:manager)
     get :edit, id: @area
     assert_response :success
+    assert_select 'div#updateAreasModal[data-backdrop="static"]'
   end
 
   test "should update area" do

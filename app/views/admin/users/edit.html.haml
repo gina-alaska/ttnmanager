@@ -1,7 +1,16 @@
-%h1
-  = "Editing #{@user.name}"
-  %small= @user.email
+.row
+  .col-sm-8
+    %h1
+      = "Editing #{@user.name}"
+      %small= @user.email
 
-= bootstrap_form_for [:admin, @user] do |f|
-  = f.select :role, User::ROLES.map{|r| [r,r]}, help: role_help
-  = f.submit
+    = render 'form'
+  .col-sm-4
+    .panel.panel-default
+      .panel-heading
+        %h1.panel-title Role descriptions
+      .panel-body
+        %dl.role-descriptions
+          - role_help.each do |help|
+            %dt= help.first
+            %dd= help.last

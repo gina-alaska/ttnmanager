@@ -1,0 +1,4 @@
+= bootstrap_form_for [:admin, @user] do |f|
+  = f.select :role, User::ROLES.map{|r| [r,r]}
+  .text-right
+    = f.submit class: 'btn btn-primary'

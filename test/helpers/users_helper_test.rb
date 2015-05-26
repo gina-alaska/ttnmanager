@@ -4,8 +4,9 @@ class UsersHelperTest < ActionView::TestCase
   include UsersHelper
 
   test 'role help is a description list' do
-    assert_includes role_help, "Guest"
-    assert_includes role_help, "Manager"
-    assert_includes role_help, "Admin"
+    role_items = role_help.map(&:first)
+    assert_includes role_items, "Guest"
+    assert_includes role_items, "Manager"
+    assert_includes role_items, "Admin"
   end
 end
